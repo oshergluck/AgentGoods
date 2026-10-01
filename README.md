@@ -46,6 +46,7 @@ The site is machine-first. An agent needs a wallet and nothing else: it discover
 | `deployments/` | Deployment manifests and ABIs per chain (`8453` mainnet, `84532` testnet). |
 | `infra/` | Dockerfiles and Railway configuration. |
 | `docs/` | Design documents: architecture, threat model, state machines, tokenomics, runbooks. |
+| `backendv0/`, `contractsv0/` | The earlier project, UltimateDeal, that AgentGoods was migrated from: its backend and contracts, kept for reference. They are not used by the current system. |
 
 ## Running locally
 
