@@ -1,0 +1,468 @@
+[
+  {
+    "sourceAgent": "Chen",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:53:36Z",
+    "lastTransaction": "2026-09-29T18:53:36Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Kaia",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 2,
+    "totalValueUSDC": "0.24",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:54:30Z",
+    "lastTransaction": "2026-09-29T18:57:52Z",
+    "repeat": true
+  },
+  {
+    "sourceAgent": "Rosa",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:54:40Z",
+    "lastTransaction": "2026-09-29T18:54:40Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Farah",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:56:22Z",
+    "lastTransaction": "2026-09-29T18:56:22Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Mira",
+    "targetAgent": "Mira",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.05",
+    "productsPurchased": [
+      "0x67e13981"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:58:00Z",
+    "lastTransaction": "2026-09-29T18:58:00Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Noah",
+    "targetAgent": "Mira",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.05",
+    "productsPurchased": [
+      "0x67e13981"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:58:02Z",
+    "lastTransaction": "2026-09-29T18:58:02Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Priya",
+    "targetAgent": "Mira",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.05",
+    "productsPurchased": [
+      "0x67e13981"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:58:26Z",
+    "lastTransaction": "2026-09-29T18:58:26Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Omar",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:58:58Z",
+    "lastTransaction": "2026-09-29T18:58:58Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Noah",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:59:20Z",
+    "lastTransaction": "2026-09-29T18:59:20Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Liam",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T18:59:40Z",
+    "lastTransaction": "2026-09-29T18:59:40Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Iris",
+    "targetAgent": "Mira",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.05",
+    "productsPurchased": [
+      "0x67e13981"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:00:42Z",
+    "lastTransaction": "2026-09-29T19:00:42Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Hugo",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:00:44Z",
+    "lastTransaction": "2026-09-29T19:00:44Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Priya",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:00:52Z",
+    "lastTransaction": "2026-09-29T19:00:52Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Tara",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:01:36Z",
+    "lastTransaction": "2026-09-29T19:01:36Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Ava",
+    "targetAgent": "Mira",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.05",
+    "productsPurchased": [
+      "0x67e13981"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:02:06Z",
+    "lastTransaction": "2026-09-29T19:02:06Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Ava",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 4,
+    "totalValueUSDC": "0.39",
+    "productsPurchased": [
+      "0xac5f8bb1",
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:03:52Z",
+    "lastTransaction": "2026-09-29T19:16:28Z",
+    "repeat": true
+  },
+  {
+    "sourceAgent": "Iris",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.12",
+    "productsPurchased": [
+      "0xac5f8bb1"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:08:50Z",
+    "lastTransaction": "2026-09-29T19:08:50Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Dara",
+    "targetAgent": "Dara",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.01",
+    "productsPurchased": [
+      "0x0fedc8bf"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:20:46Z",
+    "lastTransaction": "2026-09-29T19:20:46Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Ava",
+    "targetAgent": "Noah",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.25",
+    "productsPurchased": [
+      "0x9141ac16"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:21:50Z",
+    "lastTransaction": "2026-09-29T19:21:50Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Ava",
+    "targetAgent": "Kaia",
+    "transactionCount": 2,
+    "totalValueUSDC": "0.50",
+    "productsPurchased": [
+      "0x8395ef3b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:25:16Z",
+    "lastTransaction": "2026-09-29T20:23:56Z",
+    "repeat": true
+  },
+  {
+    "sourceAgent": "Gita",
+    "targetAgent": "Kaia",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.25",
+    "productsPurchased": [
+      "0x8395ef3b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:25:48Z",
+    "lastTransaction": "2026-09-29T19:25:48Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Ben",
+    "targetAgent": "Ben",
+    "transactionCount": 2,
+    "totalValueUSDC": "0.02",
+    "productsPurchased": [
+      "0x568ddd22"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:25:50Z",
+    "lastTransaction": "2026-09-29T19:30:24Z",
+    "repeat": true
+  },
+  {
+    "sourceAgent": "Quinn",
+    "targetAgent": "Quinn",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.01",
+    "productsPurchased": [
+      "0xc40f2fca"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:32:00Z",
+    "lastTransaction": "2026-09-29T19:32:00Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Eli",
+    "targetAgent": "Ben",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.01",
+    "productsPurchased": [
+      "0x568ddd22"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:37:32Z",
+    "lastTransaction": "2026-09-29T19:37:32Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Priya",
+    "targetAgent": "Kaia",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.25",
+    "productsPurchased": [
+      "0x8395ef3b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:38:24Z",
+    "lastTransaction": "2026-09-29T19:38:24Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Sami",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.03",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:46:36Z",
+    "lastTransaction": "2026-09-29T19:46:36Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Dara",
+    "targetAgent": "external-store:0x61521823",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.03",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T19:50:28Z",
+    "lastTransaction": "2026-09-29T19:50:28Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Jonas",
+    "targetAgent": "Ben",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.01",
+    "productsPurchased": [
+      "0x568ddd22"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T20:19:16Z",
+    "lastTransaction": "2026-09-29T20:19:16Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Tara",
+    "targetAgent": "Kaia",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.25",
+    "productsPurchased": [
+      "0x8395ef3b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T20:27:14Z",
+    "lastTransaction": "2026-09-29T20:27:14Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Dara",
+    "targetAgent": "Kaia",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.25",
+    "productsPurchased": [
+      "0x8395ef3b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T20:27:54Z",
+    "lastTransaction": "2026-09-29T20:27:54Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Rosa",
+    "targetAgent": "Kaia",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.25",
+    "productsPurchased": [
+      "0x8395ef3b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T20:37:04Z",
+    "lastTransaction": "2026-09-29T20:37:04Z",
+    "repeat": false
+  }
+]

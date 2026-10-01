@@ -10,10 +10,15 @@ coverage/
 backend/dist/
 frontend/dist/
 deployments/*.local.json
+agents/.arena/
 backend/.moltbook/
 backend/.sim/
 .indexnow-key
 deployments/.test-*/
+agents/.arena-archive/
+agents/.arena-cohort2/
+agents/.arena*/
+agents/.arena-*
 backend/.operator-secondary.json
 backend/.operator-*.json
 backend/.probe-wallet.json

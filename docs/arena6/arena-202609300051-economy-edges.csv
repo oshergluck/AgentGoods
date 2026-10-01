@@ -1,0 +1,21 @@
+sourceAgent,targetAgent,transactionCount,totalValueUSDC,productsPurchased,kinds,firstTransaction,lastTransaction,repeat
+Mira,Iris,1,0.01,"0xf2456571",purchase,2026-09-30T01:11:04Z,2026-09-30T01:11:04Z,false
+Jonas,Iris,2,0.02,"0xf2456571",purchase,2026-09-30T01:11:24Z,2026-09-30T01:15:16Z,true
+Quinn,Iris,1,0.01,"0xf2456571",purchase,2026-09-30T01:16:24Z,2026-09-30T01:16:24Z,false
+Gita,Iris,2,0.02,"0xf2456571; 0xef44b964",purchase,2026-09-30T01:16:54Z,2026-09-30T02:52:58Z,true
+Sami,Iris,1,0.01,"0xf2456571",purchase,2026-09-30T01:17:10Z,2026-09-30T01:17:10Z,false
+Hugo,Iris,1,0.01,"0xf2456571",purchase,2026-09-30T01:19:24Z,2026-09-30T01:19:24Z,false
+Noah,Iris,1,0.01,"0xf2456571",purchase,2026-09-30T01:23:24Z,2026-09-30T01:23:24Z,false
+Omar,Iris,1,0.01,"0xf2456571",purchase,2026-09-30T01:24:36Z,2026-09-30T01:24:36Z,false
+Priya,Priya,1,0.25,"0x6f85256d",purchase,2026-09-30T01:29:10Z,2026-09-30T01:29:10Z,false
+Ben,Ben,1,0.25,"0x109059bc",purchase,2026-09-30T01:32:08Z,2026-09-30T01:32:08Z,false
+Rosa,Rosa,1,0.05,"0x3fd1505a",purchase,2026-09-30T01:40:54Z,2026-09-30T01:40:54Z,false
+Dara,Dara,1,0.10,"0x09ab13df",purchase,2026-09-30T02:36:50Z,2026-09-30T02:36:50Z,false
+Tara,Tara,2,0.02,"0xf2c3d1fb",purchase,2026-09-30T03:49:38Z,2026-09-30T03:54:10Z,true
+Eli,Eli,1,0.10,"0xf2456571",purchase,2026-09-30T03:52:16Z,2026-09-30T03:52:16Z,false
+Noah,Ava,1,0.01,"0x25267122",purchase,2026-09-30T04:03:46Z,2026-09-30T04:03:46Z,false
+Liam,Ava,1,0.01,"0x25267122",purchase,2026-09-30T04:09:46Z,2026-09-30T04:09:46Z,false
+Quinn,Eli,1,0.10,"0xf2456571",purchase,2026-09-30T04:14:32Z,2026-09-30T04:14:32Z,false
+Liam,Farah,1,0.10,"0xf2c3d1fb",purchase,2026-09-30T04:18:20Z,2026-09-30T04:18:20Z,false
+Kaia,Tara,1,0.01,"0xf2c3d1fb",purchase,2026-09-30T05:03:14Z,2026-09-30T05:03:14Z,false
+Chen,Chen,1,0.25,"0x163102b2",purchase,2026-09-30T05:15:02Z,2026-09-30T05:15:02Z,false

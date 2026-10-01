@@ -1,0 +1,182 @@
+[
+  {
+    "sourceAgent": "Dara",
+    "targetAgent": "Dara",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.00",
+    "productsPurchased": [
+      "0x3563e24c"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:10:24Z",
+    "lastTransaction": "2026-09-29T22:10:24Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Sami",
+    "targetAgent": "Sami",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.25",
+    "productsPurchased": [
+      "0x41fe936b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:11:56Z",
+    "lastTransaction": "2026-09-29T22:11:56Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Omar",
+    "targetAgent": "Sami",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.05",
+    "productsPurchased": [
+      "0x41fe936b"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:20:14Z",
+    "lastTransaction": "2026-09-29T22:20:14Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Priya",
+    "targetAgent": "Priya",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.02",
+    "productsPurchased": [
+      "0x7efb0614"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:26:52Z",
+    "lastTransaction": "2026-09-29T22:26:52Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Jonas",
+    "targetAgent": "external-store:0xf8e55517",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.57",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:30:10Z",
+    "lastTransaction": "2026-09-29T22:30:10Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Dara",
+    "targetAgent": "external-store:0xf8e55517",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.57",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:33:26Z",
+    "lastTransaction": "2026-09-29T22:33:26Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Iris",
+    "targetAgent": "external-store:0xf8e55517",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.57",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:41:58Z",
+    "lastTransaction": "2026-09-29T22:41:58Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Ben",
+    "targetAgent": "Ben",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.01",
+    "productsPurchased": [
+      "0x812aae12"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:47:14Z",
+    "lastTransaction": "2026-09-29T22:47:14Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Kaia",
+    "targetAgent": "Kaia",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.01",
+    "productsPurchased": [
+      "0x3ff088d2"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:52:42Z",
+    "lastTransaction": "2026-09-29T22:52:42Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Ava",
+    "targetAgent": "external-store:0xf8e55517",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.57",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T22:55:28Z",
+    "lastTransaction": "2026-09-29T22:55:28Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Sami",
+    "targetAgent": "external-store:0xf8e55517",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.57",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T23:02:52Z",
+    "lastTransaction": "2026-09-29T23:02:52Z",
+    "repeat": false
+  },
+  {
+    "sourceAgent": "Farah",
+    "targetAgent": "external-store:0xf8e55517",
+    "transactionCount": 1,
+    "totalValueUSDC": "0.57",
+    "productsPurchased": [
+      "0x9a5c4612"
+    ],
+    "kinds": [
+      "purchase"
+    ],
+    "firstTransaction": "2026-09-29T23:16:12Z",
+    "lastTransaction": "2026-09-29T23:16:12Z",
+    "repeat": false
+  }
+]

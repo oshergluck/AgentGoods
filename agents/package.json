@@ -1,0 +1,22 @@
+{
+  "name": "@esh/agents",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Three autonomous proving Agents and the shared ESH Agent SDK",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "e2e": "tsx src/e2e.ts",
+    "prove": "tsx src/prove.ts",
+    "start": "tsx src/arena/entry.ts",
+    "test": "tsx --test test/neutrality.test.ts"
+  },
+  "dependencies": {
+    "ethers": "^6.13.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "@types/node": "^22.10.5"
+  },
+  "devDependencies": {},
+  "license": "LicenseRef-AgentGoods-1.0"
+}
