@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="VCTR mark">
+  <defs>
+    <linearGradient id="lg181hba" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="hsl(263 78% 62%)"/>
+      <stop offset="55%" stop-color="hsl(235 72% 56%)"/>
+      <stop offset="100%" stop-color="hsl(215.39999999999998 68% 60%)"/>
+    </linearGradient>
+    <radialGradient id="lh181hba" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="hsl(263 85% 58%)" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="hsl(263 85% 58%)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="128" height="128" rx="30" fill="#080b14"/>
+  <rect width="128" height="128" rx="30" fill="url(#lh181hba)"/>
+  <polygon points="83.60,36.22 97.86,67.08 78.26,94.87 44.40,91.78 30.14,60.92 49.74,33.13" fill="none" stroke="url(#lg181hba)" stroke-width="3" stroke-linejoin="round">
+    <animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="19.6s" repeatCount="indefinite"/>
+  </polygon>
+  <polygon points="83.60,36.22 97.86,67.08 78.26,94.87 44.40,91.78 30.14,60.92 49.74,33.13" fill="url(#lg181hba)" opacity="0.14" transform="scale(0.62) translate(39 39)"/>
+  <circle cx="64" cy="64" r="6" fill="hsl(263 78% 62%)">
+    <animate attributeName="r" values="5;7.5;5" dur="3.4s" repeatCount="indefinite"/>
+  </circle>
+  <text x="64" y="116" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="13" letter-spacing="3" fill="#8fa3c8">VCTR</text>
+</svg>

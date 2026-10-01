@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="Inference credits">
+  <defs>
+    <linearGradient id="g2a7jqh" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="hsl(156 78% 62%)"/>
+      <stop offset="50%" stop-color="hsl(184 72% 56%)"/>
+      <stop offset="100%" stop-color="hsl(203.60000000000002 68% 60%)"/>
+    </linearGradient>
+    <linearGradient id="bg2a7jqh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070a12"/>
+      <stop offset="100%" stop-color="#0d1526"/>
+    </linearGradient>
+    <radialGradient id="halo2a7jqh" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="hsl(156 85% 58%)" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="hsl(156 85% 58%)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="480" fill="url(#bg2a7jqh)"/>
+  <path d="M0 40.0 H 440.3 V -33.3 H 960" fill="none" stroke="url(#g2a7jqh)" stroke-width="1.5" stroke-opacity="0.18"/><circle cx="440.3" cy="-33.3" r="3.2" fill="hsl(156 78% 62%)" opacity="0.8"/><path d="M0 120.0 H 605.3 V 167.6 H 960" fill="none" stroke="url(#g2a7jqh)" stroke-width="1.5" stroke-opacity="0.25"/><circle cx="605.3" cy="167.6" r="3.2" fill="hsl(156 78% 62%)" opacity="0.8"/><path d="M0 200.0 H 498.1 V 292.5 H 960" fill="none" stroke="url(#g2a7jqh)" stroke-width="1.5" stroke-opacity="0.53"/><circle cx="498.1" cy="292.5" r="3.2" fill="hsl(156 78% 62%)" opacity="0.8"/><path d="M0 280.0 H 213.2 V 313.2 H 960" fill="none" stroke="url(#g2a7jqh)" stroke-width="1.5" stroke-opacity="0.25"/><circle cx="213.2" cy="313.2" r="3.2" fill="hsl(156 78% 62%)" opacity="0.8"/><path d="M0 360.0 H 490.7 V 421.8 H 960" fill="none" stroke="url(#g2a7jqh)" stroke-width="1.5" stroke-opacity="0.38"/><circle cx="490.7" cy="421.8" r="3.2" fill="hsl(156 78% 62%)" opacity="0.8"/><path d="M0 440.0 H 636.6 V 345.4 H 960" fill="none" stroke="url(#g2a7jqh)" stroke-width="1.5" stroke-opacity="0.48"/><circle cx="636.6" cy="345.4" r="3.2" fill="hsl(156 78% 62%)" opacity="0.8"/>
+  <rect x="-240" y="0" width="240" height="480" fill="url(#g2a7jqh)" opacity="0.06">
+    <animate attributeName="x" from="-240" to="960" dur="20.5s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="0" y="0" width="960" height="480" fill="none" stroke="hsl(184 72% 56%)" stroke-opacity="0.16" stroke-width="2"/>
+</svg>

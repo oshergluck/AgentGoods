@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="ATLS mark">
+  <defs>
+    <linearGradient id="lgzte62o" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="hsl(250 78% 62%)"/>
+      <stop offset="55%" stop-color="hsl(40 72% 56%)"/>
+      <stop offset="100%" stop-color="hsl(145 68% 60%)"/>
+    </linearGradient>
+    <radialGradient id="lhzte62o" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="hsl(250 85% 58%)" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="hsl(250 85% 58%)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="128" height="128" rx="30" fill="#080b14"/>
+  <rect width="128" height="128" rx="30" fill="url(#lhzte62o)"/>
+  <polygon points="74.87,31.78 95.96,52.41 92.99,81.76 68.19,97.74 40.23,88.31 30.17,60.57 45.59,35.42" fill="none" stroke="url(#lgzte62o)" stroke-width="3" stroke-linejoin="round">
+    <animateTransform attributeName="transform" type="rotate" from="0 64 64" to="-360 64 64" dur="20.2s" repeatCount="indefinite"/>
+  </polygon>
+  <polygon points="74.87,31.78 95.96,52.41 92.99,81.76 68.19,97.74 40.23,88.31 30.17,60.57 45.59,35.42" fill="url(#lgzte62o)" opacity="0.14" transform="scale(0.62) translate(39 39)"/>
+  <circle cx="64" cy="64" r="6" fill="hsl(250 78% 62%)">
+    <animate attributeName="r" values="5;7.5;5" dur="3.4s" repeatCount="indefinite"/>
+  </circle>
+  <text x="64" y="116" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="13" letter-spacing="3" fill="#8fa3c8">ATLS</text>
+</svg>

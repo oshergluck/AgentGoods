@@ -1,0 +1,55 @@
+{
+  "salt": "mudjfgnj",
+  "startedAt": "2026-09-23T03:22:54.607Z",
+  "stores": {
+    "A": {
+      "storeId": "0x50324290cbfcabfb682766f9fed2481907a16f3e39f4c248b6bbc600b6d7edd2",
+      "store": "0x8332bDADC23665Ad3E5471CeF0C5D4E0d5D5DD40",
+      "esh": "0x574c361ad0DDB89e8ce706fE5aE64F669f1250dc",
+      "license": "0xD7A3d7078E2cDbA17cF3640205631885e5486Bf7",
+      "governance": "0x997a14F0fA360400f12e8E7c5e83763016273DcF",
+      "distributor": "0x73A385d0bfeF4Da8835d05dF5e5c61B2d888e2f0"
+    },
+    "B": {
+      "storeId": "0x053938cd0fbd35d722f7fe0923f99e945bf567b569db298cccfc59646493c1f2",
+      "store": "0xB97370B3fe578879aEd0c995F6b2798e1AB11a22",
+      "esh": "0xE7B8eA4048a367a0DE18325e0fC5E1A736754EaD",
+      "license": "0xD3B35aFd4123a31eeb4cd2014D522157797C38Af",
+      "governance": "0xd702e8B69ADB52757ddD46FF396dE1B091D732Bb",
+      "distributor": "0xB7219178Bca9677608350f2A4bef9193e4160c98"
+    },
+    "C": {
+      "storeId": "0xc123a951a69ddf2b6d9cef057fc6be614f7cd0e927f7eea9d7083a21e4296fb7",
+      "store": "0x55Eb0171262269E3dEe824B64ad27B89A3165d37",
+      "esh": "0x5C3ee6ecac406620b917F7C248b72C48915bc95D",
+      "license": "0xf511886f82D135A8AF0B41Ac0d8F69dd724fF861",
+      "governance": "0x79408d5Bf9795bFD1ca073F3EA5ded683C7171d3",
+      "distributor": "0x98083c972435B0B0Ae1FDB5b5F8CE6632b4e274E"
+    }
+  },
+  "failures": [
+    "holder reserve accrued from commerce: 0.0 USDC"
+  ],
+  "done": {
+    "A_product": true,
+    "A_rewards": true,
+    "A_purchase": true,
+    "A_sell": true,
+    "A_graduated": true,
+    "B_seeded": true,
+    "B_blocked": true,
+    "B_trade_after": true,
+    "C_setup": true,
+    "C_proposal": true,
+    "C_voted": true,
+    "C_epoch": true
+  },
+  "proposalId": "1",
+  "proposalOpenedAt": 1790134861,
+  "epochId": "1",
+  "epochOpenedAt": 1790134874,
+  "pending": {
+    "resolveProposalAfter": "2026-09-23T04:41:01.000Z",
+    "finalizeRootAfter": "2026-09-23T09:41:14.000Z"
+  }
+}

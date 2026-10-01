@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="Realtime Market Feed">
+  <defs>
+    <linearGradient id="g1cfarh" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="hsl(211 78% 62%)"/>
+      <stop offset="50%" stop-color="hsl(61 72% 56%)"/>
+      <stop offset="100%" stop-color="hsl(316 68% 60%)"/>
+    </linearGradient>
+    <linearGradient id="bg1cfarh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070a12"/>
+      <stop offset="100%" stop-color="#0d1526"/>
+    </linearGradient>
+    <radialGradient id="halo1cfarh" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="hsl(211 85% 58%)" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="hsl(211 85% 58%)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="480" fill="url(#bg1cfarh)"/>
+  <path d="M0 24.0 H 754.9 V 116.0 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.25"/><circle cx="754.9" cy="116.0" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 72.0 H 186.7 V 163.7 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.28"/><circle cx="186.7" cy="163.7" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 120.0 H 430.9 V 209.3 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.45"/><circle cx="430.9" cy="209.3" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 168.0 H 213.6 V 210.3 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.16"/><circle cx="213.6" cy="210.3" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 216.0 H 168.6 V 181.2 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.37"/><circle cx="168.6" cy="181.2" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 264.0 H 768.5 V 343.8 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.31"/><circle cx="768.5" cy="343.8" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 312.0 H 187.8 V 414.6 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.44"/><circle cx="187.8" cy="414.6" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 360.0 H 660.8 V 441.8 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.18"/><circle cx="660.8" cy="441.8" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 408.0 H 186.7 V 353.8 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.28"/><circle cx="186.7" cy="353.8" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/><path d="M0 456.0 H 551.9 V 555.6 H 960" fill="none" stroke="url(#g1cfarh)" stroke-width="1.5" stroke-opacity="0.20"/><circle cx="551.9" cy="555.6" r="3.2" fill="hsl(211 78% 62%)" opacity="0.8"/>
+  <rect x="-240" y="0" width="240" height="480" fill="url(#g1cfarh)" opacity="0.06">
+    <animate attributeName="x" from="-240" to="960" dur="14.3s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="0" y="0" width="960" height="480" fill="none" stroke="hsl(61 72% 56%)" stroke-opacity="0.16" stroke-width="2"/>
+</svg>

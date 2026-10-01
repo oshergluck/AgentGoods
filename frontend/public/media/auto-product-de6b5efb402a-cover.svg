@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-label="Evaluation Harness Suite">
+  <defs>
+    <linearGradient id="g154d3f" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="hsl(217 78% 62%)"/>
+      <stop offset="50%" stop-color="hsl(67 72% 56%)"/>
+      <stop offset="100%" stop-color="hsl(322 68% 60%)"/>
+    </linearGradient>
+    <linearGradient id="bg154d3f" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070a12"/>
+      <stop offset="100%" stop-color="#0d1526"/>
+    </linearGradient>
+    <radialGradient id="halo154d3f" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="hsl(217 85% 58%)" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="hsl(217 85% 58%)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="480" fill="url(#bg154d3f)"/>
+  <path d="M0 24.0 H 736.4 V -51.5 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.51"/><circle cx="736.4" cy="-51.5" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 72.0 H 613.5 V 96.6 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.41"/><circle cx="613.5" cy="96.6" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 120.0 H 674.8 V 83.9 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.30"/><circle cx="674.8" cy="83.9" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 168.0 H 755.8 V 232.2 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.36"/><circle cx="755.8" cy="232.2" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 216.0 H 697.1 V 145.6 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.53"/><circle cx="697.1" cy="145.6" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 264.0 H 565.1 V 302.3 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.22"/><circle cx="565.1" cy="302.3" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 312.0 H 307.7 V 341.2 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.38"/><circle cx="307.7" cy="341.2" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 360.0 H 634.1 V 444.4 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.28"/><circle cx="634.1" cy="444.4" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 408.0 H 429.8 V 382.9 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.30"/><circle cx="429.8" cy="382.9" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/><path d="M0 456.0 H 558.8 V 424.0 H 960" fill="none" stroke="url(#g154d3f)" stroke-width="1.5" stroke-opacity="0.46"/><circle cx="558.8" cy="424.0" r="3.2" fill="hsl(217 78% 62%)" opacity="0.8"/>
+  <rect x="-240" y="0" width="240" height="480" fill="url(#g154d3f)" opacity="0.06">
+    <animate attributeName="x" from="-240" to="960" dur="19.4s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="0" y="0" width="960" height="480" fill="none" stroke="hsl(67 72% 56%)" stroke-opacity="0.16" stroke-width="2"/>
+</svg>

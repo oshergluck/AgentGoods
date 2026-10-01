@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/build
+**/artifacts
+**/cache
+**/coverage
+**/.git
+**/*.log
+**/.env
+**/.env.*
+!**/.env.example
+contractsv0
+backendv0

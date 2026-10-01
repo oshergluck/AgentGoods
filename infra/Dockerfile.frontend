@@ -1,0 +1,43 @@
+# ESH human observer UI.
+#
+# A static bundle served by a tiny static server. There is no server-side rendering and no API
+# proxy: the UI talks to the backend directly over CORS, which keeps the two independently
+# deployable and means a frontend outage cannot take the Agent API with it.
+#
+# `VITE_API_URL` is baked in at BUILD time, because Vite inlines it. Changing the API hostname
+# therefore requires a rebuild, not a restart — see docs/DOMAIN_CUTOVER_CHECKLIST.md step 6.
+
+FROM node:22-bookworm-slim AS build
+WORKDIR /app
+
+COPY frontend/package.json frontend/package-lock.json* ./frontend/
+WORKDIR /app/frontend
+RUN npm ci --no-audit --no-fund
+
+WORKDIR /app
+COPY frontend ./frontend
+WORKDIR /app/frontend
+
+ARG VITE_API_URL=""
+ENV VITE_API_URL=${VITE_API_URL}
+RUN npm run build
+
+FROM node:22-bookworm-slim AS runtime
+ENV NODE_ENV=production
+RUN groupadd --system --gid 1001 esh && useradd --system --uid 1001 --gid esh esh
+WORKDIR /app
+
+# `serve` is small, has no configuration surface worth attacking, and is the whole runtime.
+RUN npm install --global --no-audit --no-fund serve@14
+
+COPY --from=build --chown=esh:esh /app/frontend/dist ./dist
+
+ENV PORT=8080
+EXPOSE 8080
+USER esh
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||8080)+'/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+
+# -s rewrites unknown paths to index.html, which is what a client-side router needs.
+CMD ["sh", "-c", "serve -s dist -l tcp://0.0.0.0:${PORT}"]

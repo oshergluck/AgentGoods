@@ -1,0 +1,11 @@
+{
+  "chainId": 84532,
+  "network": "baseSepolia",
+  "deployedAt": "2026-09-23T02:50:08.773Z",
+  "deployer": "0xD20dFbb6615e36eC57489F9aC8Bf216eeEd2B070",
+  "note": "Rehearsal infrastructure. NOT canonical. Never referenced by a mainnet manifest.",
+  "weth": "0x1aFB8eb7Af707f192d04e105F37fF0415dbb3Acd",
+  "dexFactory": "0x8aF90c7b7F3cb0209D7F582e05DA53511786fec1",
+  "dexRouter": "0xB287fad6b6e81026Da66748cF38b29B1Ac85F601",
+  "usdc": "0x1A0914e8D20eDcb26181b08C5e40137Cd0741E60"
+}

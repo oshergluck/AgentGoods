@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1.0.0",
+  "protocolVersion": "1.0.0",
+  "environment": "LOCAL",
+  "chainId": 31337,
+  "networkName": "localhost",
+  "generatedAt": "2026-09-22T23:13:53.851Z",
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "deploymentBlock": 135,
+  "compiler": {
+    "version": "0.8.28",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "cancun",
+    "viaIR": true,
+    "metadataBytecodeHash": "none"
+  },
+  "roles": {
+    "bootstrapAdmin": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "guardian": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "treasuryDestination": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "dividendRootProposer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "timelock": null
+  },
+  "external": {
+    "canonicalUSDC": "0x36C02dA8a0983159322a80FFE9F24b1acfF8B570",
+    "usdcDecimals": 6,
+    "dexRouter": "0x1291Be112d480055DaFd8a610b7d1e203891C274",
+    "dexFactory": "0x4c5859f0F772848b2D91F1D83E2Fe57935348029",
+    "lpBurnAddress": "0x000000000000000000000000000000000000dEaD",
+    "isMockExternal": true
+  },
+  "contracts": {
+    "registry": {
+      "proxy": "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575",
+      "implementation": "0x5f3f1dBD7B74C6B46e8c44f98792A1dAf8d69154",
+      "implementationVersion": "1.0.0",
+      "upgradeable": true,
+      "proxyStandard": "ERC1967/UUPS"
+    },
+    "ultraShop": {
+      "proxy": "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1",
+      "implementation": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90",
+      "implementationVersion": "1.0.0",
+      "upgradeable": true,
+      "proxyStandard": "ERC1967/UUPS"
+    },
+    "protocolTreasury": {
+      "address": "0x7969c5eD335650692Bc04293B07F5BF2e7A673C0",
+      "upgradeable": false,
+      "runtimeCodeHash": "0xdf66f8a8e6cb4ea751402d1aa71737408e022ed6b9c637f98ef59ce92d70f8d3"
+    },
+    "activeFactories": [
+      {
+        "address": "0x922D6956C99E12DFeB3224DEA977D0939758A1Fe",
+        "version": 1,
+        "status": "CANONICAL_ACTIVE",
+        "runtimeCodeHash": "0xeaf03d217612cd45174aac2315e0d95ea4658e1ed8e9116845650ba3cdaa0319"
+      }
+    ],
+    "deprecatedFactories": [],
+    "componentImplementations": {
+      "eshCoin": {
+        "contract": "ESHCoin",
+        "address": "0xc351628EB244ec633d5f21fBD6621e1a683B1181",
+        "runtimeCodeHash": "0x8bc029736b4b02bbecef4c6b657c0d7a2b5b8f6f1e52993eb2c68a3eea1a1dde"
+      },
+      "salesStore": {
+        "contract": "ESHStoreSales",
+        "address": "0xFD471836031dc5108809D173A067e8486B9047A3",
+        "runtimeCodeHash": "0x8c0f27e46aafc5183a21c80191fc0318388886a9dfbdb9050b603f4d28a84f60"
+      },
+      "rentalsStore": {
+        "contract": "ESHStoreRentals",
+        "address": "0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc",
+        "runtimeCodeHash": "0xaf757a86b57e1be8e31fdb7521b31f06a2aca58db2dd078ec55faedea7705746"
+      },
+      "licenseToken": {
+        "contract": "LicenseToken",
+        "address": "0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f",
+        "runtimeCodeHash": "0x7b393e239cc867b04cee70eb9ca9316d1c5b8ff52c7f3ea79ce38e4ab972f6b2"
+      },
+      "governance": {
+        "contract": "ESHGovernance",
+        "address": "0xB0D4afd8879eD9F52b28595d31B441D079B2Ca07",
+        "runtimeCodeHash": "0x368d11c520f27b17af47946f8685cfdd755ff317aa5f53332b7a2048954f65bd"
+      },
+      "distributor": {
+        "contract": "DividendDistributor",
+        "address": "0x162A433068F51e18b7d13932F27e66a3f99E6890",
+        "runtimeCodeHash": "0x7283c438a909715f896ec87ba7efb11fe6400863fbce86ae654bce13d9fa077d"
+      }
+    }
+  },
+  "economics": {
+    "eshGenesisSupply": "1000000000000000000000000000",
+    "eshDecimals": 18,
+    "virtualUSDCReserve": "6000000000",
+    "transitionThresholdESH": "300000000000000000000000000",
+    "transitionThresholdPercent": 30,
+    "lpPremiumBps": 3500,
+    "commerceFeeBps": 250,
+    "holderReserveBps": 500,
+    "dividendProcessingFeeBps": 500,
+    "dividendProcessingFeeBasis": "committed_holder_reserve",
+    "ultraShopProtocolFeeBps": 200,
+    "ultraShopControllerFeeBps": 100,
+    "postTransitionProtocolFeeBps": 0,
+    "storeCreationFeeUSDC": "0",
+    "takeoverObservationPeriodSeconds": 3600,
+    "minDistributionUSDC": "1000000",
+    "rootChallengePeriodSeconds": 21600,
+    "rootLivenessTimeoutSeconds": 2592000,
+    "signalWindowSeconds": 604800,
+    "minSignalsForRate": 5,
+    "holdingWindowSeconds": 604800,
+    "nominalBlockTimeSeconds": 2,
+    "salesRewardRate": {
+      "numerator": 2,
+      "denominator": 1000,
+      "minimumPool": "500",
+      "poolGate": "0"
+    },
+    "rentalsRewardRate": {
+      "numerator": 2,
+      "denominator": 100000,
+      "minimumPool": "500",
+      "poolGate": "100000"
+    }
+  }
+}

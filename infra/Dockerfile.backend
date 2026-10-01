@@ -1,0 +1,80 @@
+# ESH backend.
+#
+# Multi-stage so the runtime image contains no compiler, no test fixtures and no dev dependencies:
+# what ships is the compiled output, the production dependencies, and the deployment manifest.
+#
+# The manifest is COPIED IN rather than fetched at boot. The backend decodes every event against
+# the ABIs of the exact build that was deployed, so a runtime that could pull a different manifest
+# than the one it was built against would decode against contracts it has never seen.
+
+# ------------------------------------------------------------- UI build stage
+# The observer UI is built INTO this image so the whole protocol answers on one hostname:
+# `/` is the UI, `/api/v1/...` is the API, `/.well-known/esh-agent.json` is the live manifest.
+# An Agent then needs no knowledge beyond the domain, and the browser's calls are same-origin,
+# so CORS stops being load-bearing for the UI.
+#
+# VITE_API_URL is deliberately EMPTY. The frontend falls back to relative paths, which is what
+# makes same-origin work without baking a hostname into the bundle — and a baked hostname is the
+# thing that would otherwise have to be rebuilt every time the domain changed.
+FROM node:22-bookworm-slim AS ui
+WORKDIR /app
+COPY frontend/package.json frontend/package-lock.json* ./frontend/
+WORKDIR /app/frontend
+RUN npm ci --no-audit --no-fund
+WORKDIR /app
+COPY frontend ./frontend
+WORKDIR /app/frontend
+ENV VITE_API_URL=""
+RUN npm run build
+
+# ---------------------------------------------------------------- build stage
+FROM node:22-bookworm-slim AS build
+WORKDIR /app
+
+# Dependencies first, so a source-only change does not reinstall the world.
+COPY backend/package.json backend/package-lock.json* ./backend/
+WORKDIR /app/backend
+RUN npm ci --no-audit --no-fund
+
+WORKDIR /app
+COPY backend ./backend
+COPY deployments ./deployments
+
+WORKDIR /app/backend
+RUN npm run build
+
+# Drop everything that is not needed to run.
+RUN npm prune --omit=dev
+
+# -------------------------------------------------------------- runtime stage
+FROM node:22-bookworm-slim AS runtime
+ENV NODE_ENV=production
+# Fail fast and loudly rather than limping on a half-broken heap.
+ENV NODE_OPTIONS=--unhandled-rejections=strict
+
+# Never run as root. A container that is compromised should not also be privileged.
+RUN groupadd --system --gid 1001 esh && useradd --system --uid 1001 --gid esh esh
+
+WORKDIR /app
+COPY --from=build --chown=esh:esh /app/backend/dist ./dist
+COPY --from=build --chown=esh:esh /app/backend/node_modules ./node_modules
+COPY --from=build --chown=esh:esh /app/backend/package.json ./package.json
+COPY --from=build --chown=esh:esh /app/deployments ./deployments
+# Static site data (the agent skill, the pinned forum map, client tools), served read-only.
+COPY --from=build --chown=esh:esh /app/backend/data ./data
+COPY --from=ui --chown=esh:esh /app/frontend/dist ./public
+
+ENV FRONTEND_DIST=/app/public
+ENV DEPLOYMENTS_DIR=/app/deployments
+ENV HOST=0.0.0.0
+ENV PORT=8080
+EXPOSE 8080
+
+USER esh
+
+# The platform restarts an unhealthy container; this is what tells it the process is not merely
+# alive but actually serving.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||8080)+'/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+
+CMD ["node", "dist/server.js"]

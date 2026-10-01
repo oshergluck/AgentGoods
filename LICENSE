@@ -1,0 +1,163 @@
+AgentGoods Restricted Use License
+Version 1.0, 2026-09-23
+SPDX identifier: LicenseRef-AgentGoods-1.0
+
+Copyright (c) 2026 the ESH / AgentGoods operator ("the Licensor").
+All rights reserved except as expressly granted below.
+
+This software is SOURCE-AVAILABLE, not open source. It is published so that anyone can read,
+audit and verify what the deployed system does. It is published for INSPECTION, not for reuse.
+
+--------------------------------------------------------------------------------
+0. THE SHORT VERSION
+--------------------------------------------------------------------------------
+
+  - You may READ and AUDIT everything here. That is the point of publishing it.
+  - You may NOT COPY the contracts or any other code into anything.
+  - You may NOT DEPLOY these contracts yourself.
+  - If you want your own store and your own store contracts, CREATE THEM THROUGH THE CANONICAL
+    FACTORY on the Authorized Deployment. That is free of charge, it is the intended way, and it
+    is the only authorized way.
+
+Sections 1 to 10 are the binding terms.
+
+--------------------------------------------------------------------------------
+1. DEFINITIONS
+--------------------------------------------------------------------------------
+
+"The Software" means this repository and everything in it: the Solidity contracts, the backend,
+the indexer, the frontend, the Agent SDK, the scripts, the schemas and the documentation.
+
+"The Authorized Deployment" means the deployment of the Software operated by the Licensor and
+served from the domain `agentgoods.ai`, its subdomains, and the on-chain contracts deployed by the
+Licensor and listed in the deployment manifest published at that domain.
+
+"The Canonical Factory" means the StoreFactory contract of the Authorized Deployment, as recorded
+in the Registry of that deployment and published in its deployment manifest.
+
+--------------------------------------------------------------------------------
+2. WHAT YOU MAY DO
+--------------------------------------------------------------------------------
+
+Subject to Section 3, the Licensor grants you a worldwide, royalty-free, non-exclusive,
+non-transferable, revocable license to:
+
+  (a) READ, study and audit the Software, including for security research, and to verify that the
+      deployed bytecode corresponds to the published source;
+
+  (b) RUN an unmodified copy of the Software on your own machine or on a private chain you
+      control, SOLELY for evaluation, security research or testing, and solely for yourself;
+
+  (c) USE the Authorized Deployment as an end user or as an autonomous Agent, including calling
+      its APIs, transacting with its contracts, and CREATING YOUR OWN STORE AND STORE CONTRACTS
+      THROUGH THE CANONICAL FACTORY (see Section 4);
+
+  (d) QUOTE and reference the Software in commentary, research, reporting and education, with
+      attribution;
+
+  (e) REPORT defects and submit contributions to the Licensor.
+
+--------------------------------------------------------------------------------
+3. WHAT YOU MAY NOT DO
+--------------------------------------------------------------------------------
+
+Without the Licensor's prior written permission, you may NOT:
+
+  (a) COPY any part of the Software into any other work. This is absolute and it is the central
+      restriction of this license. It covers the Solidity contracts, the backend, the indexer, the
+      frontend, the SDK, the scripts and the schemas, in whole or in part, verbatim or
+      substantially derived, whether by copying source, by transcribing behaviour, or by
+      translating it into another language or another chain;
+
+  (b) DEPLOY the contracts, or any part or derivative of them, to any public network. Creating
+      store contracts is done through the Canonical Factory and not by deploying your own copy;
+
+  (c) OPERATE the Software, or a derivative of it, as a service for anyone other than yourself, or
+      offer it to third parties, whether hosted, bundled, embedded, forked or otherwise, and
+      whether or not for a fee;
+
+  (d) REMOVE, obscure or alter this license, the SPDX identifiers, the copyright notices, or the
+      provenance and canonicality mechanisms in the Software;
+
+  (e) PRESENT a deployment that is not the Authorized Deployment as being the Authorized
+      Deployment, or use the names, marks, domain or branding of the Licensor in a way likely to
+      cause that confusion.
+
+Reading the Software in order to understand it is permitted by Section 2(a). Reproducing what you
+read is not.
+
+--------------------------------------------------------------------------------
+4. THE FACTORY IS THE AUTHORIZED WAY, AND IT IS FREE
+--------------------------------------------------------------------------------
+
+You do not need to copy or deploy anything to have your own store.
+
+The Canonical Factory creates a complete, independent store for you — its own store contract, its
+own ERC20 store token, its own LicenseToken, its own governance and its own dividend distributor —
+atomically, in one transaction, and the Licensor charges no fee for it. You pay only the network's
+own gas.
+
+Those contracts are yours to control. Nothing in this license restricts your use of a store you
+created through the Canonical Factory, or of the store token it minted for you.
+
+This is not a limitation dressed up as a feature. Provenance is what lets any Agent verify that a
+store it is about to transact with is canonical rather than a convincing copy, and that guarantee
+only exists if every canonical store comes from the same Factory. A deployed copy would be, by
+construction, exactly the thing the provenance check is designed to reject.
+
+--------------------------------------------------------------------------------
+5. WHAT THIS LICENSE CANNOT DO
+--------------------------------------------------------------------------------
+
+Stated plainly, because a license that implied otherwise would be misleading:
+
+Contract bytecode deployed to a public blockchain is readable and copyable by anyone, and this
+license is a legal instrument rather than a technical control. It does not and cannot prevent
+copying. It states what the Licensor permits and what the Licensor forbids; enforcement is a legal
+matter, not a cryptographic one.
+
+--------------------------------------------------------------------------------
+6. CONTRIBUTIONS
+--------------------------------------------------------------------------------
+
+Any contribution you intentionally submit for inclusion in the Software is licensed to the
+Licensor under these same terms, without additional conditions.
+
+--------------------------------------------------------------------------------
+7. TERMINATION
+--------------------------------------------------------------------------------
+
+This license terminates automatically if you breach Section 3. Rights under Sections 2(a), 2(c)
+and 2(d) — reading, using the Authorized Deployment including stores you created through the
+Canonical Factory, and quoting — survive termination.
+
+--------------------------------------------------------------------------------
+8. NO WARRANTY
+--------------------------------------------------------------------------------
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT.
+
+THE SOFTWARE OPERATES ON PUBLIC BLOCKCHAINS AND HANDLES DIGITAL ASSETS. IT HAS NOT BEEN SUBJECT TO
+AN EXTERNAL SECURITY AUDIT. See docs/DECISIONS.md D-026.
+
+--------------------------------------------------------------------------------
+9. LIMITATION OF LIABILITY
+--------------------------------------------------------------------------------
+
+IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+THE USE OR OTHER DEALINGS IN THE SOFTWARE, INCLUDING ANY LOSS OF FUNDS OR DIGITAL ASSETS.
+
+--------------------------------------------------------------------------------
+10. PERMISSION REQUESTS
+--------------------------------------------------------------------------------
+
+Permission to copy, deploy or operate the Software outside the Authorized Deployment may be
+requested from the Licensor via `agentgoods.ai`. Absent written permission, assume it is refused.
+
+--------------------------------------------------------------------------------
+
+NOTE: this license was drafted for this project and has not been reviewed by a lawyer. Have it
+reviewed before relying on it commercially.

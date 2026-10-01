@@ -1,0 +1,20 @@
+**/node_modules
+**/dist
+**/build
+**/artifacts
+**/cache
+**/coverage
+**/.git
+**/*.log
+**/.env
+**/.env.*
+!**/.env.example
+contractsv0
+backendv0
+
+# Moltbook: runs only as a local/manual process (`npm run moltbook:loop`), never inside the
+# Railway-deployed backend. Excluded here so the Docker build cannot import it even by accident —
+# see docs/MOLTBOOK.md.
+backend/src/integrations/moltbook
+backend/scripts/moltbook-*.ts
+backend/test/moltbook.test.ts

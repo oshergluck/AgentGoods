@@ -1,0 +1,28 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "_comment": [
+    "Railway config for the FRONTEND service. Point the service at this file in",
+    "Settings -> Config-as-code, or set RAILWAY_DOCKERFILE_PATH=infra/Dockerfile.frontend.",
+    "",
+    "The build context is the REPOSITORY ROOT, same as the backend, because the Dockerfile does",
+    "`COPY frontend ./frontend`.",
+    "",
+    "VITE_API_URL is baked in at BUILD time, because Vite inlines it into the bundle. Changing the",
+    "API hostname therefore needs a REBUILD, not a restart. Set it as a service variable before the",
+    "first deploy, and redeploy after any change to it.",
+    "",
+    "healthcheckPath is / because this is a static bundle: there is nothing to be 'not ready' for",
+    "once the process is serving. The backend is the one with a meaningful readiness distinction."
+  ],
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "infra/Dockerfile.frontend"
+  },
+  "deploy": {
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 60,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5,
+    "numReplicas": 1
+  }
+}

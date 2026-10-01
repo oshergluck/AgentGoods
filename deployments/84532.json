@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "1.0.0",
+  "protocolVersion": "1.0.0",
+  "environment": "PROVING",
+  "chainId": 84532,
+  "networkName": "baseSepolia",
+  "generatedAt": "2026-09-30T21:51:50.003Z",
+  "deployer": "0xD20dFbb6615e36eC57489F9aC8Bf216eeEd2B070",
+  "deploymentBlock": 47518411,
+  "compiler": {
+    "version": "0.8.28",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "cancun",
+    "viaIR": true,
+    "metadataBytecodeHash": "none"
+  },
+  "roles": {
+    "bootstrapAdmin": "0xD20dFbb6615e36eC57489F9aC8Bf216eeEd2B070",
+    "guardian": "0x8105b38A956F9d79e68100AdDa0afA19a5fdE7CA",
+    "treasuryDestination": "0x7437a03CaCda010DdE5272045d1AD2cb01e2B0dc",
+    "dividendRootProposer": "0x9BFf7A5213031c18278de25E35B5a7E1649C9a81",
+    "timelock": null
+  },
+  "external": {
+    "canonicalUSDC": "0x1A0914e8D20eDcb26181b08C5e40137Cd0741E60",
+    "usdcDecimals": 6,
+    "dexRouter": "0xB287fad6b6e81026Da66748cF38b29B1Ac85F601",
+    "dexFactory": "0x8aF90c7b7F3cb0209D7F582e05DA53511786fec1",
+    "lpBurnAddress": "0x000000000000000000000000000000000000dEaD",
+    "isMockExternal": false
+  },
+  "contracts": {
+    "registry": {
+      "proxy": "0x7B1704313f942E0c4E5Fc0fea6Fb6B6D8772b560",
+      "implementation": "0x0EfA15c53Af2F7De56f0f138FD63e95004b180C7",
+      "implementationVersion": "1.0.0",
+      "upgradeable": true,
+      "proxyStandard": "ERC1967/UUPS"
+    },
+    "agentGoods": {
+      "proxy": "0xE250cE10C217271cea767790c7f89Ab5e71e855C",
+      "implementation": "0xa3B6e0b11a11f7562C5cB4F5eC0c6F86691a0c9e",
+      "implementationVersion": "1.0.0",
+      "upgradeable": true,
+      "proxyStandard": "ERC1967/UUPS"
+    },
+    "protocolTreasury": {
+      "address": "0x84F4e9e193D37eE7f7DEf2770c5c054f33C73812",
+      "upgradeable": false,
+      "runtimeCodeHash": "0xc4507b58d932fef971d5732822934f44dc1b9d31b50fc5c11b664d16a3c237aa"
+    },
+    "activeFactories": [
+      {
+        "address": "0x372a3F621D9062A60fc86D996a50c02942a610bE",
+        "version": 5,
+        "status": "CANONICAL_ACTIVE",
+        "runtimeCodeHash": "0x10e30d0184cb427b36f06ffb259249f8974a2cf2d85353a79e44b76203c3a9c0"
+      }
+    ],
+    "deprecatedFactories": [],
+    "componentImplementations": {
+      "aiCoin": {
+        "contract": "AICoin",
+        "address": "0x740Eb8E80F089767FE12D5D2446431af46570f38",
+        "runtimeCodeHash": "0x0c03f246d028d712d3fdc81a4adfb53fd6802a1f79250da1c72b84af39ccdb7a"
+      },
+      "salesStore": {
+        "contract": "AICStoreSales",
+        "address": "0xF849774C35212503a6332Cce47640CC1671373Ef",
+        "runtimeCodeHash": "0x88762050d80d559e0b9fb666587c30fcf179b5c8afaaf65f7be560ce4c389c1b"
+      },
+      "rentalsStore": {
+        "contract": "AICStoreRentals",
+        "address": "0xAA66fdac5eD73Df251687b8AA12BE0bF695aB2ad",
+        "runtimeCodeHash": "0xff43ffefbf2c08a7e42fc5f5d18f7b1846628c67fde96e65766174c4b2ec9b5c"
+      },
+      "licenseToken": {
+        "contract": "LicenseToken",
+        "address": "0xD7d70993badAd13A8A2c0B6B30078aD5f67ae8Fa",
+        "runtimeCodeHash": "0xd83d9f170ba697d259fc43f515dfddb49ecb6b4e914de41a601b6c3be1b21718"
+      },
+      "governance": {
+        "contract": "AICGovernance",
+        "address": "0x33E3F9817df2cE022fd40772BaBA989460b8f5f8",
+        "runtimeCodeHash": "0xbbaed199a3ec5b363a9959b6d34203b83c12e4f2ad1ea6bf09deb62026182c8b"
+      },
+      "distributor": {
+        "contract": "DividendDistributor",
+        "address": "0xA4d57D34abeaF5D4Bba408D95b7E615587b40052",
+        "runtimeCodeHash": "0xaaeaa6e8e0513e9ca7ff9b213c847f2434d553459ef48d26948112cf26776685"
+      }
+    }
+  },
+  "economics": {
+    "aicGenesisSupply": "1000000000000000000000000000",
+    "aicDecimals": 18,
+    "virtualUSDCReserve": "6000000000",
+    "transitionThresholdAIC": "300000000000000000000000000",
+    "transitionThresholdPercent": 30,
+    "lpPremiumBps": 3500,
+    "commerceFeeBps": 250,
+    "holderReserveBps": 2000,
+    "dividendProcessingFeeBps": 500,
+    "dividendProcessingFeeBasis": "committed_holder_reserve",
+    "agentGoodsProtocolFeeBps": 200,
+    "agentGoodsControllerFeeBps": 100,
+    "postTransitionProtocolFeeBps": 0,
+    "storeCreationFeeUSDC": "0",
+    "takeoverObservationPeriodSeconds": 3600,
+    "minDistributionUSDC": "1000000",
+    "rootChallengePeriodSeconds": 10800,
+    "rootLivenessTimeoutSeconds": 2592000,
+    "signalWindowSeconds": 604800,
+    "minSignalsForRate": 5,
+    "holdingWindowSeconds": 10800,
+    "minInitialOwnerSeedUSDC": "5000000",
+    "minTradeUSDC": "100",
+    "minProductPriceUSDC": "523",
+    "ownerWithdrawalCooldownSeconds": 10800,
+    "nominalBlockTimeSeconds": 2,
+    "salesRewardRate": {
+      "numerator": 2,
+      "denominator": 1000,
+      "minimumPool": "500",
+      "poolGate": "0"
+    },
+    "rentalsRewardRate": {
+      "numerator": 2,
+      "denominator": 100000,
+      "minimumPool": "500",
+      "poolGate": "100000"
+    }
+  },
+  "verification": {
+    "verifiedAt": "2026-09-30T21:52:21.605Z",
+    "explorer": "baseSepolia",
+    "results": [
+      {
+        "name": "AICRegistry (implementation)",
+        "address": "0x0EfA15c53Af2F7De56f0f138FD63e95004b180C7",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "AgentGoods (implementation)",
+        "address": "0xa3B6e0b11a11f7562C5cB4F5eC0c6F86691a0c9e",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "AICRegistry (proxy)",
+        "address": "0x7B1704313f942E0c4E5Fc0fea6Fb6B6D8772b560",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "AgentGoods (proxy)",
+        "address": "0xE250cE10C217271cea767790c7f89Ab5e71e855C",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "ProtocolTreasury",
+        "address": "0x84F4e9e193D37eE7f7DEf2770c5c054f33C73812",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "StoreFactory v5",
+        "address": "0x372a3F621D9062A60fc86D996a50c02942a610bE",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "aiCoin (clone implementation)",
+        "address": "0x740Eb8E80F089767FE12D5D2446431af46570f38",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "salesStore (clone implementation)",
+        "address": "0xF849774C35212503a6332Cce47640CC1671373Ef",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "rentalsStore (clone implementation)",
+        "address": "0xAA66fdac5eD73Df251687b8AA12BE0bF695aB2ad",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "licenseToken (clone implementation)",
+        "address": "0xD7d70993badAd13A8A2c0B6B30078aD5f67ae8Fa",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "governance (clone implementation)",
+        "address": "0x33E3F9817df2cE022fd40772BaBA989460b8f5f8",
+        "status": "verified",
+        "reason": null
+      },
+      {
+        "name": "distributor (clone implementation)",
+        "address": "0xA4d57D34abeaF5D4Bba408D95b7E615587b40052",
+        "status": "verified",
+        "reason": null
+      }
+    ],
+    "complete": true
+  }
+}

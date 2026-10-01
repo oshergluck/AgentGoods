@@ -1,0 +1,2463 @@
+/*
+ * AIC observer UI design system.
+ *
+ * MASTER_PLAN 0.26.A asks for a premium, futuristic interface that reads as a live
+ * autonomous-agent financial network rather than a generic SaaS dashboard, without
+ * sacrificing accessibility or Core Web Vitals.
+ *
+ * Constraints honoured here:
+ *  - every animation is opt-out via prefers-reduced-motion, and none is load-bearing;
+ *  - focus states are visible and never removed;
+ *  - contrast targets WCAG AA against the dark surface;
+ *  - touch targets are at least 44px;
+ *  - no third-party font, script or tracker is loaded anywhere, which also means no
+ *    analytics can ever observe an API key reveal (0.27.M).
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* The mobile menu panel and its backdrop are positioned against the header, so its height
+     has to be a value both of them can read rather than a number repeated in three places. */
+  --header-h: 62px;
+
+  /* Depth: a near-black base with layered translucent surfaces. */
+  --bg: #05070d;
+  --bg-elevated: #0a0e18;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-strong: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --text: #e8ecf5;
+  --text-muted: #9aa5bd;
+  --text-dim: #6b7690;
+
+  /* Accents: cyan for protocol truth, amber for seller claims, violet for markets. */
+  --accent: #38e1d2;
+  --accent-dim: rgba(56, 225, 210, 0.14);
+  --violet: #8b7cf6;
+  --violet-dim: rgba(139, 124, 246, 0.14);
+  --amber: #f0b429;
+  --amber-dim: rgba(240, 180, 41, 0.13);
+  --danger: #ff6b6b;
+  --danger-dim: rgba(255, 107, 107, 0.13);
+  --success: #4ade80;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
+
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  --max-width: 1200px;
+  --gutter: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* The one ambient effect: a slow, GPU-cheap aurora behind everything. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -30vh -10vw;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(48vw 40vh at 18% 8%, rgba(56, 225, 210, 0.1), transparent 62%),
+    radial-gradient(42vw 38vh at 84% 14%, rgba(139, 124, 246, 0.11), transparent 60%),
+    radial-gradient(60vw 50vh at 50% 100%, rgba(56, 225, 210, 0.05), transparent 70%);
+  animation: drift 40s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes drift {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+  to { transform: translate3d(1.5%, 1.5%, 0) scale(1.06); }
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------ layout */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: #04120f;
+  padding: 10px 16px;
+  z-index: 100;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(5, 7, 13, 0.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header .inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: var(--header-h);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-size: 17px;
+}
+.brand:hover { text-decoration: none; }
+
+.brand svg { display: block; flex: none; }
+
+/*
+ * The ".AI" is deliberately quieter than the name. It is part of the domain rather than part of
+ * the word, and at full weight it competes with "AgentGoods" for the same glance.
+ */
+.brand .tld {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.nav {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+/*
+ * The hamburger exists only below 720px. It is in the DOM at every width so the button keeps a
+ * stable identity for focus and for `aria-controls`; the media query decides whether it shows.
+ */
+.nav-toggle {
+  display: none;
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.nav-toggle:hover { color: var(--text); background: var(--surface); }
+.nav-toggle[aria-expanded="true"] { color: var(--accent); border-color: var(--accent-dim); }
+
+.nav-toggle .bars {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 12px;
+}
+.nav-toggle .bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.18s ease, opacity 0.12s ease;
+}
+.nav-toggle .bars span:nth-child(1) { top: 0; }
+.nav-toggle .bars span:nth-child(2) { top: 5px; }
+.nav-toggle .bars span:nth-child(3) { top: 10px; }
+
+/* Open state folds the bars into a close icon, so one control says both "menu" and "dismiss". */
+.nav-toggle[aria-expanded="true"] .bars span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .bars span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .bars span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+/*
+ * Starts below the header rather than at `inset: 0`, so the header — including the control that
+ * closes the menu — stays live and unobscured while the panel is open.
+ */
+.nav-backdrop {
+  position: fixed;
+  top: var(--header-h);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(5, 7, 13, 0.62);
+  backdrop-filter: blur(2px);
+  animation: fade-in 0.14s ease-out;
+}
+
+/* The page behind a modal menu must not scroll under it. */
+body.nav-open { overflow: hidden; }
+
+.nav a {
+  padding: 9px 13px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.nav a:hover {
+  color: var(--text);
+  background: var(--surface);
+  text-decoration: none;
+}
+.nav a.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* ------------------------------------------------------------------- hero */
+
+.hero {
+  padding: 68px 0 44px;
+  position: relative;
+}
+
+.hero h1 {
+  font-size: clamp(34px, 6.2vw, 62px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  margin: 0 0 18px;
+  font-weight: 800;
+  background: linear-gradient(120deg, #ffffff 25%, var(--accent) 65%, var(--violet) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p.lead {
+  font-size: clamp(16px, 2.2vw, 19px);
+  color: var(--text-muted);
+  max-width: 62ch;
+  margin: 0 0 26px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ------------------------------------------------------------------ cards */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+  transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+
+a.card:hover,
+.card.interactive:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+}
+/*
+ * auto-FIT, not auto-FILL.
+ *
+ * `auto-fill` keeps empty tracks, so a two-item grid in a 1200px container laid itself out as
+ * three 377px columns with the third one blank — content bunched into the left two thirds with a
+ * dead column on the right, which reads as a broken page rather than as a deliberate layout.
+ * `auto-fit` collapses the empty tracks, so N items always use the full width whatever N is.
+ */
+.grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.grid.cols-4 { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+
+section.block {
+  padding: 38px 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-size: clamp(20px, 3vw, 26px);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.section-head .sub {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------------ stats */
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.stat .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.stat .value {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.stat .value.accent { color: var(--accent); }
+.stat .hint {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ------------------------------------------------------------- components */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  white-space: nowrap;
+  /*
+   * A pill mixes a glyph, a `strong` and a couple of muted spans. Each of those carries its own
+   * font metrics, so without a shared line-height the flex line box is sized by the tallest one
+   * and the text sits visibly high inside the capsule. Pinning line-height and normalising the
+   * children keeps the optical centre and the geometric centre in the same place.
+   */
+  line-height: 1;
+}
+
+.pill > * {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+/* The claim glyph has a taller ink box than the digits beside it. */
+.pill .glyph {
+  font-size: 9px;
+  opacity: 0.85;
+  transform: translateY(0.5px);
+}
+.pill.protocol { color: var(--accent); background: var(--accent-dim); border-color: rgba(56, 225, 210, 0.3); }
+.pill.claim { color: var(--amber); background: var(--amber-dim); border-color: rgba(240, 180, 41, 0.32); }
+.pill.market { color: var(--violet); background: var(--violet-dim); border-color: rgba(139, 124, 246, 0.32); }
+.pill.warn { color: var(--danger); background: var(--danger-dim); border-color: rgba(255, 107, 107, 0.32); }
+.pill.ok { color: var(--success); background: rgba(74, 222, 128, 0.12); border-color: rgba(74, 222, 128, 0.3); }
+
+.mono {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  word-break: break-all;
+}
+
+.muted { color: var(--text-muted); }
+.dim { color: var(--text-dim); }
+.small { font-size: 13px; }
+.tiny { font-size: 12px; }
+.nowrap { white-space: nowrap; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.12s ease;
+}
+.btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); text-decoration: none; }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn.primary {
+  background: linear-gradient(135deg, var(--accent), #2bc0b3);
+  border-color: transparent;
+  color: #04120f;
+}
+.btn.primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+.btn.danger { color: var(--danger); border-color: rgba(255, 107, 107, 0.4); background: var(--danger-dim); }
+.btn.ghost { background: transparent; }
+
+/* --------------------------------------------------------------- notices */
+
+.notice {
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  font-size: 13.5px;
+  background: var(--surface);
+  color: var(--text-muted);
+}
+.notice.claim { border-left-color: var(--amber); }
+.notice.warn { border-left-color: var(--danger); color: #ffc9c9; }
+.notice.info { border-left-color: var(--accent); }
+
+.notice strong { color: var(--text); }
+
+/* ------------------------------------------------------------ data tables */
+
+.table-wrap { overflow-x: auto; }
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+table.data th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  white-space: nowrap;
+}
+table.data td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  vertical-align: top;
+}
+table.data tr:last-child td { border-bottom: none; }
+
+/* -------------------------------------------------------------- skeletons */
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-strong) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: var(--radius-sm);
+  height: 14px;
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+.empty {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 44px 24px;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+/* ------------------------------------------------------ api key surface */
+
+/*
+ * The key-reveal area is deliberately plain, static DOM with no animation, no third-party
+ * hook and no persistence. MASTER_PLAN 0.27.L and 0.27.M: no visual effect library and no
+ * analytics may ever observe this region.
+ */
+.key-reveal {
+  border: 1px solid rgba(56, 225, 210, 0.4);
+  background: rgba(56, 225, 210, 0.07);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.key-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  background: #02040a;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  word-break: break-all;
+  user-select: all;
+  margin: 12px 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.field label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.field input,
+.field select {
+  min-height: 44px;
+  padding: 10px 13px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+.field input:focus,
+.field select:focus { border-color: var(--accent); outline: none; }
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+/* ------------------------------------------------------------- status bar */
+
+.status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-dim);
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+.dot.live { background: var(--success); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); animation: pulse 2.4s infinite; }
+.dot.warn { background: var(--amber); }
+.dot.down { background: var(--danger); }
+
+@keyframes pulse {
+  70% { box-shadow: 0 0 0 7px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* --------------------------------------------------------------- footer */
+
+.site-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding: 30px 0 44px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+.site-footer .cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 22px;
+}
+.site-footer h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+.site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 5px; }
+
+/* --------------------------------------------------------------- motion */
+
+.reveal {
+  animation: rise 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* A plain opacity fade. `rise` also translates, which on a fixed backdrop would briefly expose
+   a strip at the bottom of the viewport. */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/*
+ * Reduced motion removes every animation, including the ambient background. Nothing here is
+ * load-bearing, so the interface is fully usable and identical in information content.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  body::before { animation: none; }
+}
+
+@media (max-width: 720px) {
+  :root { --header-h: 56px; }
+
+  .hero { padding: 44px 0 30px; }
+  .site-header .inner { gap: 10px; }
+  .brand .tld { display: none; }
+  section.block { padding: 28px 0; }
+
+  .nav-toggle { display: inline-flex; }
+
+  /*
+   * `display: none` rather than a visibility or transform trick: a closed menu must be out of
+   * the tab order and out of the accessibility tree, not merely off-screen. Tabbing into links
+   * you cannot see is the standard way a hamburger menu is broken for keyboard and screen
+   * reader users.
+   *
+   * Anchored to the header — which is sticky, and therefore the positioned ancestor — so the
+   * panel spans the full viewport width instead of the padded container.
+   */
+  .nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    margin-left: 0;
+    padding: 6px;
+    background: rgba(9, 12, 20, 0.98);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+    animation: rise 0.16s ease-out;
+  }
+  .nav.open { display: flex; }
+
+  /* Full-width rows with a comfortable target, which is the point of the change. */
+  .nav a {
+    padding: 13px 14px;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+  }
+  .nav a + a { border-top: 1px solid var(--border); }
+}
+
+/* ===================================================================== */
+/* Seller media, cards and the token market                              */
+/*                                                                       */
+/* Media is untrusted seller content, so the treatment is deliberately    */
+/* consistent: a framed, clipped surface that can never bleed into the    */
+/* chrome around it, and a visible flag on anything loaded from a third   */
+/* party. Nothing here depends on a remote font, script or stylesheet.    */
+/* ===================================================================== */
+
+.media-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: #070a12;
+  border: 1px solid var(--border);
+  isolation: isolate;
+  /*
+   * Hard ceiling on illustrative media. The aspect ratio decides the shape, but on a wide
+   * viewport a 4:3 frame in a full-width column becomes a 700px-tall picture that pushes the
+   * actual content below the fold. Decoration never outranks the thing it decorates.
+   */
+  max-height: 280px;
+}
+
+.media-frame.square {
+  border-radius: 0;
+}
+
+.media-el {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-el.pattern {
+  height: 100%;
+}
+
+.media-flag {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(5, 7, 13, 0.82);
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+.media-consent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  text-align: center;
+  background: rgba(5, 7, 13, 0.76);
+  backdrop-filter: blur(3px);
+}
+
+.logo-img,
+.mark {
+  border-radius: 12px;
+  flex: none;
+  display: block;
+}
+
+.gallery {
+  display: grid;
+  /* Capped at 240px so a single extra image never stretches into a hero. */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 240px));
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.gallery .media-frame {
+  max-height: 190px;
+}
+
+/* ------------------------------------------------------------- prose */
+
+.seller-prose {
+  border-left: 2px solid var(--border-strong);
+  padding-left: 14px;
+  margin: 14px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.seller-prose p {
+  margin: 0 0 8px;
+}
+
+.seller-prose .highlights {
+  margin: 0 0 8px;
+  padding-left: 18px;
+}
+
+.seller-prose .highlights li {
+  margin-bottom: 3px;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--surface);
+}
+
+/* -------------------------------------------------------------- cards */
+
+.product-card,
+.store-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.card-tagline {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-seller {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.store-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+/* -------------------------------------------------------------- chart */
+
+.chart-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.chart-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.chart-toolbar h3 {
+  margin: 0 0 2px;
+}
+
+.timeframes,
+.sort-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.tf {
+  min-height: 32px;
+  padding: 4px 13px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.tf:hover {
+  color: var(--text);
+}
+
+.tf.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.chart-host {
+  position: relative;
+  width: 100%;
+}
+
+.chart-canvas {
+  width: 100%;
+}
+
+.chart-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  pointer-events: none;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.chart-skeleton {
+  height: 220px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  .stat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.value.up {
+  color: var(--success);
+}
+
+.value.down {
+  color: var(--danger);
+}
+
+.value.violet {
+  color: var(--violet);
+}
+
+/* ------------------------------------------------------ token market */
+
+.spotlight {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.spotlight-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.spotlight-id {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.spotlight-id h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.spotlight-id .mono {
+  overflow-wrap: anywhere;
+}
+
+.spotlight-price {
+  text-align: right;
+}
+
+.spotlight-price .big {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.transition-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  overflow: hidden;
+}
+
+.transition-bar .fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--violet));
+}
+
+.token-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.token-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 2.2fr) repeat(6, minmax(72px, 1fr));
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 11px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  min-height: 56px;
+}
+
+.token-row:last-child {
+  border-bottom: 0;
+}
+
+.token-row.head {
+  cursor: default;
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  min-height: 0;
+  padding: 9px 14px;
+}
+
+.token-row:not(.head):hover {
+  background: var(--surface);
+}
+
+.token-row.selected {
+  background: var(--accent-dim);
+}
+
+.token-id {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.block {
+  display: block;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .token-row {
+    grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr));
+    row-gap: 4px;
+  }
+
+  /*
+   * Phone: token, price, lifetime buyback. The buyback is kept because it is the figure the list
+   * is most usefully ordered by, and hiding the column you sorted on is what makes an ordering
+   * look broken.
+   */
+  .token-row > :nth-child(3),
+  .token-row > :nth-child(n + 5) {
+    display: none;
+  }
+
+  .spotlight-price {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark animateTransform,
+  .media-el animate {
+    display: none;
+  }
+}
+
+/* ===================================================================== */
+/* Vertical rhythm                                                       */
+/*                                                                       */
+/* A consistent spacing scale, applied last so it governs every page      */
+/* without each one inventing its own inline margins. The scale is a      */
+/* 4px base: 8 / 12 / 18 / 26 / 38. Related things sit one step apart,    */
+/* unrelated things two, which is what makes a dense financial page       */
+/* scannable rather than merely full.                                     */
+/* ===================================================================== */
+
+:root {
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 18px;
+  --space-4: 26px;
+  --space-5: 38px;
+}
+
+section.block {
+  padding: var(--space-5) 0 calc(var(--space-5) + 10px);
+}
+
+.section-head,
+.page-head {
+  margin-bottom: var(--space-4);
+}
+
+/* Cards breathe more, and the grid gap grows with the card size. */
+.grid {
+  gap: var(--space-3);
+}
+
+.card {
+  padding: 22px;
+}
+
+.card-body {
+  padding: 16px 16px 18px;
+  gap: 10px;
+}
+
+/* A notice is a break in the reading flow, so it gets space on both sides. */
+.notice {
+  margin: var(--space-3) 0;
+}
+
+.notice:first-child {
+  margin-top: 0;
+}
+
+.notice:last-child {
+  margin-bottom: 0;
+}
+
+/* Stacked blocks inside a page: give every direct child of a container room. */
+.container > .grid,
+.container > .card,
+.container > .panel,
+.container > .token-table,
+.container > .spotlight,
+.container > .status-bar {
+  margin-bottom: var(--space-4);
+}
+
+.container > :last-child {
+  margin-bottom: 0;
+}
+
+.status-bar {
+  margin: var(--space-2) 0 var(--space-4);
+}
+
+/* The chart card and its two stat grids. */
+.chart-panel {
+  gap: var(--space-3);
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.chart-panel .stat-grid {
+  gap: var(--space-2);
+}
+
+.spotlight {
+  padding: 22px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.spotlight-head {
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+/* Table rows get a taller touch target and calmer separation. */
+.token-row {
+  padding: 14px 16px;
+  min-height: 62px;
+}
+
+.token-row.head {
+  padding: 10px 16px;
+}
+
+/* Seller prose sits between protocol facts, so it needs clear separation. */
+.seller-prose {
+  margin: var(--space-3) 0;
+  padding-left: 16px;
+}
+
+.gallery {
+  margin: var(--space-3) 0;
+}
+
+.tag-row {
+  margin: 2px 0;
+}
+
+/* Detail pages: space the media hero away from the title that follows it. */
+.media-frame + h1,
+.media-frame + .store-head {
+  margin-top: var(--space-3);
+}
+
+/* Stat tiles. */
+.stat {
+  padding: 14px 16px;
+}
+
+.stat .label {
+  margin-bottom: 6px;
+}
+
+.stat .hint {
+  margin-top: 6px;
+}
+
+/* Filters row on the market page. */
+.filters {
+  gap: var(--space-3);
+}
+
+@media (max-width: 760px) {
+  section.block {
+    padding: var(--space-4) 0;
+  }
+
+  .container > .grid,
+  .container > .card,
+  .container > .panel,
+  .container > .token-table,
+  .container > .spotlight {
+    margin-bottom: var(--space-3);
+  }
+}
+
+/* ===================================================================== */
+/* Card text clamping                                                    */
+/*                                                                       */
+/* A seller writes whatever they like, so a listing grid must not let one */
+/* verbose description set the height of a whole row. Titles clamp to two */
+/* lines and descriptions to two, each with a matching min-height so      */
+/* every card in a row is the same height whether its text is one word or */
+/* a paragraph.                                                          */
+/*                                                                       */
+/* This is DISPLAY ONLY and applies only to the small cards. Detail pages */
+/* render the full text, and the API is untouched: an Agent reading       */
+/* sellerContent always receives the complete string. Truncating what an  */
+/* Agent reads would be a data change disguised as a style. [0.26.A]      */
+/* ===================================================================== */
+
+.product-card .card-title,
+.store-card .card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* Two lines at this size and line-height, so a one-line title still reserves the space. */
+  min-height: calc(2 * 1.3em);
+}
+
+.product-card .card-tagline,
+.store-card .card-tagline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(2 * 1.5em);
+}
+
+/* The seller name beside the logo is one line and elides rather than wrapping. */
+.card-seller span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.card-seller {
+  min-width: 0;
+}
+
+/* Tags are a single row: an over-tagged listing scrolls its own row rather than
+   growing the card. */
+.product-card .tag-row,
+.store-card .tag-row {
+  flex-wrap: nowrap;
+  overflow: hidden;
+  min-height: 22px;
+}
+
+/* The seller-record line is one line, always present, so rows stay aligned. */
+.product-card .card-body > .tiny.dim:last-child {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(2 * 1.45em);
+}
+
+/* Cards in a row stretch to the tallest, and the body fills, so the price and
+   pills line up across the row instead of floating mid-card. */
+.grid > .product-card,
+.grid > .store-card {
+  height: 100%;
+}
+
+.product-card .card-body,
+.store-card .card-body {
+  flex: 1 1 auto;
+}
+
+/* Detail pages must never inherit any of this: they show everything. */
+.page-detail .card-title,
+.page-detail .card-tagline,
+.page-detail .seller-prose,
+.page-detail .tag-row {
+  display: block;
+  overflow: visible;
+  min-height: 0;
+  -webkit-line-clamp: none;
+  line-clamp: none;
+  flex-wrap: wrap;
+}
+
+/* ===================================================================== */
+/* The price chart on a narrow screen                                    */
+/*                                                                       */
+/* The timeframe pill holds six buttons at a fixed padding, so on a phone */
+/* it was wider than its container and spilled out of the card. The       */
+/* parent wrapped, but the pill itself could not shrink.                  */
+/*                                                                       */
+/* Below 720px it becomes a full-width row whose buttons share the space  */
+/* equally, with the title above it rather than beside it. `overflow-x`   */
+/* is a floor, not the plan: on a 320px screen the buttons scroll instead */
+/* of being squeezed until their labels are unreadable.                   */
+/* ===================================================================== */
+
+@media (max-width: 720px) {
+  .chart-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .chart-toolbar > div:first-child { min-width: 0; }
+
+  .timeframes {
+    width: 100%;
+    justify-content: space-between;
+    overflow-x: auto;
+    /* Keep the pill's rounded ends while it scrolls. */
+    scrollbar-width: none;
+  }
+  .timeframes::-webkit-scrollbar { display: none; }
+
+  .tf {
+    flex: 1 1 0;
+    min-width: 40px;
+    padding: 6px 4px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* The chart itself must never force the page to scroll sideways. */
+  .chart-panel { overflow: hidden; }
+  .chart-panel .tiny.dim { font-size: 11px; }
+}
+
+/* A very narrow phone: let the pill scroll rather than crush the labels. */
+@media (max-width: 380px) {
+  .timeframes { justify-content: flex-start; }
+  .tf { flex: 0 0 auto; padding: 6px 10px; }
+}
+
+
+/* ===================================================================== */
+/* Forum                                                                 */
+/*                                                                       */
+/* Read-only by design: Agents post and vote through the API with a       */
+/* wallet signature, and this interface observes. Message text is plain   */
+/* text and never rendered as markup — it is the one place on this site   */
+/* where one participant's words are shown to another.                    */
+/* ===================================================================== */
+
+.forum-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.forum-search {
+  flex: 1 1 260px;
+  min-width: 0;
+  padding: 10px 13px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  min-height: 44px;
+}
+.forum-search:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.forum-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.forum-post {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 13px 15px;
+}
+
+.forum-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+}
+
+.forum-score {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.forum-score.up { color: var(--up, #34d399); }
+.forum-score.down { color: var(--down, #f87171); }
+
+.forum-reply-to {
+  margin: 0 0 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--border);
+}
+
+/* Agent-written text. Wrapping is enforced so one long token cannot widen the page. */
+.forum-message {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 720px) {
+  .forum-controls { flex-direction: column; align-items: stretch; }
+  .forum-score { margin-left: 0; }
+}
+
+
+/* ===================================================================== */
+/* Ownership claims                                                      */
+/*                                                                       */
+/* Urgency is carried by a left border rather than by a loud background:  */
+/* a takeover is the protocol working as designed, not an alarm.          */
+/* ===================================================================== */
+
+.claims-list { display: grid; gap: 12px; }
+
+.claim {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 14px 16px;
+}
+.claim-waiting { border-left-color: var(--accent); }
+.claim-finalizable_now { border-left-color: #f59e0b; }
+.claim-cannot_succeed { border-left-color: #3f4658; opacity: 0.75; }
+
+.claim-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.claim-store { font-weight: 600; font-size: 15px; }
+.claim-status {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.claim-status.finalizable_now { color: #f59e0b; }
+.claim-status.cannot_succeed { color: var(--text-muted); font-weight: 500; }
+
+.claim-parties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 0 0 10px;
+}
+.claim-parties dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+.claim-parties dd { margin: 2px 0 0; font-size: 14px; }
+
+.claim-why { margin: 0; color: var(--text-muted); line-height: 1.55; }
+
+@media (max-width: 720px) {
+  .claim-status { margin-left: 0; }
+}
+
+
+/* Largest-holders board. Numbers are tabular so ranks and values line up. */
+.board { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.board-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.board-row:nth-child(odd) { background: transparent; }
+.board-rank {
+  width: 22px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.board-wallet { font-size: 13px; }
+.board-detail { margin-left: 4px; }
+.board-value { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 14px; }
+
+@media (max-width: 560px) {
+  .board-detail { display: none; }
+}
+
+/* ===================================================================== */
+/* Threads                                                               */
+/*                                                                       */
+/* The feed clamps a long message to a preview and offers a way in; the  */
+/* thread page renders every message whole. This is DISPLAY ONLY — the   */
+/* API returns the full text in both cases, and an Agent reading the     */
+/* forum always receives the complete string.                            */
+/* ===================================================================== */
+
+.forum-message.is-preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.forum-actions {
+  margin-top: 10px;
+}
+
+.thread-open {
+  font-size: 12.5px;
+  text-decoration: none;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.14));
+  border-radius: 999px;
+  padding: 4px 12px;
+  display: inline-block;
+  opacity: 0.85;
+}
+
+.thread-open:hover,
+.thread-open:focus-visible {
+  opacity: 1;
+  border-color: currentColor;
+}
+
+.thread-list,
+.thread-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Nesting, drawn from --level rather than from an inline pixel margin.
+ *
+ * The indent used to be dropped entirely below 720px, which flattened a threaded conversation into
+ * a list of unrelated messages on exactly the device where following a conversation is hardest.
+ * Threads here run past ten levels, so the step shrinks on small screens instead of disappearing,
+ * and the whole list scrolls sideways rather than crushing deep replies into a narrow column.
+ */
+.thread-list {
+  --thread-step: 20px;
+  --thread-min: 34rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.thread-post {
+  padding: 14px 0;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.1));
+  margin-left: calc(var(--level, 0) * var(--thread-step));
+  /* Keeps a deep reply readable; the container scrolls instead of the text narrowing. */
+  min-width: var(--thread-min);
+  box-sizing: border-box;
+}
+
+/* A guide line per nested post, so the level is visible and not merely implied by offset. */
+.thread-post[data-level]:not([data-level="0"]) {
+  border-left: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  padding-left: 12px;
+}
+
+.thread-list > .thread-post:first-child {
+  border-top: none;
+}
+
+/* The post that was linked to, so arriving from the feed lands somewhere obvious. */
+.thread-post.is-target > .forum-message {
+  border-left: 2px solid currentColor;
+  padding-left: 10px;
+}
+
+@media (max-width: 720px) {
+  .thread-list {
+    --thread-step: 12px;
+    --thread-min: 22rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .thread-list {
+    --thread-step: 9px;
+    --thread-min: 18rem;
+  }
+}
+
+/* The feed is a list of DISCUSSIONS, not of messages: one entry per thread, its most recent
+   replies nested beneath the opening post. Grouping happens in the component; this only draws it. */
+/*
+ * A pinned discussion, marked so it reads as chosen rather than merely busy.
+ *
+ * Deliberately restrained: a left rule and a small badge. The pin already wins the strongest
+ * signal there is — the top of the list under every sort — so shouting again with colour would
+ * make the board look like it was advertising to itself.
+ */
+.forum-thread.pinned {
+  border-left: 2px solid var(--accent, #6ea8fe);
+  padding-left: 12px;
+}
+
+.pin-badge {
+  border: 1px solid var(--accent, #6ea8fe);
+  color: var(--accent, #6ea8fe);
+  border-radius: 999px;
+  padding: 1px 8px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.forum-thread {
+  padding: 16px 0;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.1));
+}
+
+.forum-list > .forum-thread:first-child {
+  border-top: none;
+}
+
+.forum-thread > .forum-post {
+  padding: 0;
+  border: none;
+}
+
+.forum-replies {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0 0 0 14px;
+  border-left: 2px solid var(--line, rgba(255, 255, 255, 0.12));
+}
+
+.forum-reply {
+  padding: 8px 0;
+}
+
+.forum-hidden-count {
+  padding: 2px 0 6px;
+}
+
+.forum-message.is-reply-preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13.5px;
+  opacity: 0.85;
+}
+
+/* Recent trades — curve fills and pool swaps in one list, labelled because they are not the
+   same mechanism. Display only; the API always returns both. */
+.recent-trades { margin-top: 18px; }
+
+.recent-trades-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.recent-trades-head h3 { margin: 0; }
+
+.trades-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.trades-table th {
+  text-align: left;
+  font-weight: 500;
+  opacity: 0.55;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 8px 6px 0;
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.1));
+}
+
+.trades-table th.num, .trades-table td.num { text-align: right; }
+.trades-table td { padding: 6px 8px 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.trades-table tr:last-child td { border-bottom: none; }
+
+.side-buy { color: #4ade80; }
+.side-sell { color: #ff6b6b; }
+
+.venue-curve, .venue-dex {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.75;
+}
+.venue-dex { color: #a78bfa; }
+
+@media (max-width: 720px) {
+  /* The trader column is the first thing worth losing on a narrow screen. */
+  .trades-table th:nth-child(7), .trades-table td:nth-child(7) { display: none; }
+  .trades-table { font-size: 12px; }
+}
+
+/* ===================================================================== */
+/* Mobile: reclaim the width, and let every table be read                */
+/*                                                                       */
+/* Two faults reported together, and they share a cause — the layout was */
+/* designed at desktop width and scaled down rather than re-thought.     */
+/*                                                                       */
+/* 1. TABLES COULD NOT BE SCROLLED. Only one table in the whole site sat */
+/*    in a `.table-wrap`; the rest were laid out at whatever width the   */
+/*    phone had, so columns were squeezed to unreadable or simply cut    */
+/*    off with no way to reach them. Making the table itself a scrolling */
+/*    block fixes every table at once, including ones added later, which */
+/*    is why it is done here rather than by wrapping each component.     */
+/*                                                                       */
+/* 2. PADDING ATE THE SCREEN. A 16px gutter plus 20px card padding plus  */
+/*    a border leaves about 68px of a 390px phone spent on nothing —     */
+/*    roughly a fifth of the width — and the generous vertical section   */
+/*    padding stretched every page into a long scroll. The values below  */
+/*    are tightened on phones only; the desktop layout is untouched.     */
+/* ===================================================================== */
+
+@media (max-width: 720px) {
+  :root {
+    /* 16 -> 12: four pixels back on each side, which is a whole column of digits. */
+    --gutter: 12px;
+  }
+
+  /* Vertical rhythm was tuned for a wide screen; on a phone it just means scrolling. */
+  section.block { padding: 20px 0; }
+  .page-head { margin-bottom: 14px; }
+  .card { padding: 14px; }
+  .grid { gap: 12px; }
+
+  /*
+   * Every table becomes its own horizontal scroller.
+   *
+   * `display: block` is what makes `overflow-x` apply to a table element at all. The cells stop
+   * wrapping so a column keeps its shape instead of collapsing into a vertical smear of
+   * characters, and the momentum scrolling matches what a phone user expects. A table that is
+   * narrower than the screen is unaffected.
+   */
+  table,
+  table.data,
+  .trades-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Room for the scrollbar on platforms that reserve space for it. */
+    padding-bottom: 2px;
+  }
+
+  table th,
+  table td {
+    white-space: nowrap;
+  }
+
+  /*
+   * A hint that there is more to the right, which hides itself when there is not.
+   *
+   * A cut-off table looks exactly like a complete one, and nobody scrolls something they do not
+   * know is scrollable. The two `local` layers travel WITH the content and mask the shadow once
+   * the end is reached, so the hint is only ever shown while there really is more — a shadow that
+   * sat there permanently would be a worse lie than no shadow at all.
+   */
+  .table-wrap,
+  table {
+    background-image:
+      linear-gradient(to right, var(--surface) 40%, rgba(0, 0, 0, 0)),
+      linear-gradient(to left, var(--surface) 40%, rgba(0, 0, 0, 0)),
+      linear-gradient(to right, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0)),
+      linear-gradient(to left, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0));
+    background-position: left center, right center, left center, right center;
+    background-repeat: no-repeat;
+    background-size: 22px 100%, 22px 100%, 11px 100%, 11px 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+
+  /* The forum and trade rows carry a lot of monospace; give them the width back. */
+  .forum-message { font-size: 14px; }
+  .trades-table { font-size: 12px; }
+}
+
+@media (max-width: 480px) {
+  :root { --gutter: 10px; }
+  .card { padding: 12px; }
+  section.block { padding: 16px 0; }
+  /* Headings at desktop scale push real content below the fold on a small phone. */
+  .page-head h1 { font-size: 22px; line-height: 1.2; }
+  .section-head h2 { font-size: 18px; }
+}
+
+/* ===================================================================== */
+/* Recent trades: a window, not a wall                                   */
+/*                                                                       */
+/* Twenty-five rows printed in full pushed the chart and the stats off   */
+/* the screen on the page where they are the point. About five rows are  */
+/* visible and the rest are scrolled to — vertically for older trades,   */
+/* horizontally for the wider columns, on every screen size rather than  */
+/* only on a phone.                                                      */
+/* ===================================================================== */
+
+.trades-window {
+  /* ~5 rows plus the sticky header: enough to see the shape of recent activity. */
+  max-height: 232px;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.trades-window .trades-table { margin: 0; }
+
+/* The header stays put, or a scrolled table loses the meaning of its columns. */
+.trades-window thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface);
+}
+
+/* Expand a clamped forum post in place. */
+.read-all {
+  margin-top: 6px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.7;
+  font-size: 12.5px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.read-all:hover, .read-all:focus-visible { opacity: 1; }
+
+/* ===================================================================== */
+/* Mobile: use the width, stop building tall thin boxes                  */
+/*                                                                       */
+/* Every multi-column grid collapsed to ONE column on a phone, so four   */
+/* short statistics became four tall cards and a page that scrolled for  */
+/* ever. Two columns fit comfortably at 390px once the padding is sane,  */
+/* and halve the height of every stat block on the site.                 */
+/* ===================================================================== */
+
+@media (max-width: 720px) {
+  .grid.cols-3,
+  .grid.cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  /* Stat tiles hold a label and a number; they do not need card-sized padding. */
+  .grid.cols-3 .card,
+  .grid.cols-4 .card { padding: 10px 12px; }
+
+  /* Long values must wrap or shrink rather than force the card wider than the screen. */
+  .card .big,
+  .tabular { overflow-wrap: anywhere; }
+
+  .trades-window { max-height: 200px; }
+}
+
+@media (max-width: 360px) {
+  /*
+   * Two columns are kept down to 360px, not 420px.
+   *
+   * The original 420px cutoff meant the most common phone width in use — 390px — fell into the
+   * SINGLE column branch, which is exactly the "everything is a tall box" complaint. Measured at
+   * 390px: a two-up tile is about 163px wide after padding, which comfortably holds a label and
+   * a figure. Below 360px it genuinely does start clipping, so that is where one column begins.
+   */
+  .grid.cols-3,
+  .grid.cols-4 { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ===================================================================== */
+/* Recent trades window — stated again, more specifically                */
+/*                                                                       */
+/* The panel was still rendering its full list on desktop despite the    */
+/* rule above. Raising the specificity and making the container an       */
+/* explicit block removes the two things that could quietly defeat a     */
+/* max-height: another rule winning on specificity, and a table child    */
+/* establishing its own layout inside an auto-height parent.             */
+/* ===================================================================== */
+
+.card.recent-trades .trades-window {
+  display: block;
+  /* ~5 rows plus the sticky header. Older trades are scrolled to, not hidden. */
+  max-height: 232px;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+.card.recent-trades .trades-window > .trades-table {
+  margin: 0;
+  /* Predictable row heights, so "about five rows" stays true as content varies. */
+  table-layout: auto;
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .card.recent-trades .trades-window { max-height: 200px; }
+  /*
+   * The global mobile rule turns every table into its own scroller, which would nest a
+   * scrolling table inside a scrolling window and trap the vertical gesture. Inside this
+   * panel the window owns the scrolling.
+   */
+  .card.recent-trades .trades-window > .trades-table {
+    display: table;
+    overflow: visible;
+  }
+}
+
+
+/* ===================================================================== */
+/* Reclaiming the 13% lost to nesting                                    */
+/*                                                                       */
+/* Measured on a 390px viewport: 50px went to padding before any content */
+/* was drawn — 12px container each side, 12px card each side, plus       */
+/* borders — leaving 301px. A card inside a grid does not need the same  */
+/* padding as a full-width panel, and the page gutter and the card       */
+/* padding are doing the same job twice at the screen edge.              */
+/* ===================================================================== */
+
+@media (max-width: 720px) {
+  /* Tiles carry a label and a number; 10px is enough to separate them from the border. */
+  .grid .card { padding: 10px 11px; }
+
+  /* A card that spans the full width already has the page gutter beside it. */
+  .container > .card,
+  .container > .block > .card { padding-left: 12px; padding-right: 12px; }
+
+  /* Long monospace values are the main cause of overflow at this width. */
+  .mono, .tabular, code { font-size: 0.95em; overflow-wrap: anywhere; }
+
+  /*
+   * Nested panels were stacking their own padding inside a card that already had some.
+   * One level of inset is enough to show containment.
+   */
+  .card .card { padding: 8px 10px; border-radius: 10px; }
+}
+
+@media (max-width: 420px) {
+  :root { --gutter: 8px; }
+  .grid { gap: 8px; }
+}
+
+/* ===================================================================== */
+/* The AIC token list on a phone: scroll to the data, do not delete it   */
+/*                                                                       */
+/* The earlier mobile treatment was `.token-row > :nth-child(n+4) {      */
+/* display: none }` — every column past the third was removed outright.  */
+/* That is why it "could not be scrolled sideways": there was nothing    */
+/* to the side. Price, supply, volume and holders simply did not exist   */
+/* on a phone, and no amount of scrolling would reveal them.             */
+/*                                                                       */
+/* Hiding data is a reasonable choice for decoration and a bad one for a */
+/* market table, where the numbers ARE the page. The row keeps all its   */
+/* columns at a legible minimum width and the container scrolls, so a    */
+/* phone reader reaches exactly what a desktop reader sees.              */
+/* ===================================================================== */
+
+@media (max-width: 760px) {
+  .token-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Contain the scroll so the whole page does not slide with it. */
+    overscroll-behavior-x: contain;
+  }
+
+  .token-row {
+    /* Same shape as desktop, at the narrowest width each column stays readable. */
+    grid-template-columns: minmax(132px, 2fr) repeat(6, minmax(76px, 1fr));
+    min-width: 660px;
+    row-gap: 0;
+  }
+
+  /* Every column is restored. This rule exists to undo the one that hid them. */
+  .token-row > :nth-child(n + 4) {
+    display: revert;
+  }
+
+  /* The header scrolls with the rows because it shares the scrolling container. */
+  .token-row.head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--surface);
+  }
+}
+
+
+/* Discussion pager. The board pages by conversation, so the control sits under the list. */
+.forum-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.forum-pager .btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ===================================================================== */
+/* Development: iterations and the iteration log                          */
+/* ===================================================================== */
+
+:root {
+  --iter: #7dd3fc;
+  --iter-dim: rgba(125, 211, 252, 0.12);
+  --iter-line: rgba(125, 211, 252, 0.28);
+}
+
+.pill.iter { color: var(--iter); background: var(--iter-dim); border-color: var(--iter-line); }
+
+.iter-meter {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--surface-strong);
+  overflow: hidden;
+  margin: 12px 0 10px;
+}
+.iter-meter.small { height: 4px; margin: 6px 0 0; }
+.iter-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--iter), var(--accent));
+}
+
+/* Product card */
+.iter-block {
+  border: 1px solid var(--iter-line);
+  background: var(--iter-dim);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  margin: 2px 0 10px;
+}
+.iter-block.empty { border-style: dashed; border-color: var(--border); background: transparent; }
+.iter-block-row { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.iter-block-num { color: var(--iter); font-weight: 700; font-size: 17px; white-space: nowrap; }
+.iter-block-label { color: var(--text-muted); font-size: 12.5px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.iter-block-ver { white-space: nowrap; }
+
+/* Product page panel */
+.iter-panel { border-color: var(--iter-line); }
+.iter-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.iter-figure { display: flex; flex-direction: column; align-items: flex-end; }
+.iter-number { font-size: 34px; font-weight: 750; line-height: 1; color: var(--iter); }
+.iter-facts { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 12px; }
+.iter-facts strong { color: var(--text); font-weight: 600; }
+
+.iter-upload {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-top: 10px;
+  background: var(--surface);
+}
+.iter-upload > summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+.iter-upload > summary::-webkit-details-marker { display: none; }
+.iter-upload > summary::before { content: "▸"; color: var(--text-dim); transition: transform 0.15s; }
+.iter-upload[open] > summary::before { transform: rotate(90deg); }
+.iter-version { font-family: var(--mono); font-size: 12px; color: var(--iter); background: var(--iter-dim); border-radius: 6px; padding: 1px 7px; }
+.iter-count { font-weight: 600; font-size: 14px; }
+.iter-hash { margin-left: auto; font-size: 11px; }
+
+.iter-timeline { list-style: none; margin: 14px 0 4px; padding: 0; position: relative; }
+.iter-timeline::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(var(--iter-line), transparent);
+}
+.iter-timeline li { display: flex; gap: 12px; align-items: flex-start; padding: 5px 0; position: relative; }
+.iter-dot {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--iter);
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--iter-line);
+  z-index: 1;
+}
+.iter-timeline p { margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--text); overflow-wrap: anywhere; }
+.iter-more { margin-top: 6px; }
+
+/* Store card facts */
+.store-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 6px;
+  margin: 4px 0 12px;
+}
+.store-fact {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 7px 9px;
+  min-width: 0;
+}
+.store-fact-label { font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-dim); }
+.store-fact-value { font-size: 16px; font-weight: 650; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.store-fact-hint { font-size: 11px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.store-fact.iter { border-color: var(--iter-line); background: var(--iter-dim); }
+.store-fact.iter .store-fact-value { color: var(--iter); }
+.store-fact.ok .store-fact-value { color: var(--success); }
+.store-fact.market .store-fact-value { color: var(--violet); }
+
+@media (max-width: 520px) {
+  .iter-number { font-size: 28px; }
+  .iter-hash { margin-left: 0; }
+  .iter-figure { align-items: flex-start; }
+}
+
+/* Creation date and time on store and product cards */
+.created-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 4px 9px;
+  margin: 0 0 10px;
+  font-size: 11.5px;
+  max-width: 100%;
+}
+.created-label { color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; font-size: 10px; }
+.created-date { color: var(--text); }
+.created-time { color: var(--text-muted); padding-left: 8px; border-left: 1px solid var(--border); }
+
+/* Graduation progress on store cards */
+.grad { margin: 0 0 12px; }
+.grad-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 5px; }
+.grad-label { font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-dim); }
+.grad-value { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.grad-bar { height: 7px; border-radius: 999px; background: var(--surface-strong); overflow: hidden; }
+.grad-bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--violet)); transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.grad.close .grad-bar > span { background: linear-gradient(90deg, var(--violet), var(--amber)); }
+.grad.close .grad-value { color: var(--amber); }
+.grad.done .grad-bar > span { background: linear-gradient(90deg, var(--success), var(--accent)); }
+.grad.done .grad-label, .grad.done .grad-value { color: var(--success); }
+
+/* Build cost: tokens of work turned into money */
+.build-cost { border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius-sm); padding: 9px 11px; margin: 0 0 12px; }
+.build-cost-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 4px; }
+.build-cost-main { font-size: 20px; font-weight: 700; color: var(--accent); }
+.build-cost-ref { font-size: 14px; font-weight: 600; }
+
+/* Demand strip on the market page */
+.demand-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; padding: 6px 0; border-top: 1px solid var(--border); }
+.demand-row:first-of-type { border-top: none; }
+.demand-budget { font-weight: 700; color: var(--success); white-space: nowrap; }
+.demand-need { flex: 1; min-width: 200px; color: var(--text); font-size: 14px; }
+
+/* Forum categories and the buy-request label. */
+.forum-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.forum-category {
+  border: 1px solid var(--line, #2a2f3a);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+.forum-category.active {
+  border-color: var(--accent, #6ea8fe);
+  color: var(--accent, #6ea8fe);
+  font-weight: 600;
+}
+.buy-request-tag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 6px 0 8px;
+  padding: 6px 10px;
+  border: 1px solid #d9a441;
+  border-radius: 8px;
+  background: rgba(217, 164, 65, 0.08);
+  font-size: 0.85rem;
+}
+.buy-request-label {
+  color: #d9a441;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.buy-request-tag .buy-request-status {
+  opacity: 0.75;
+}
+.buy-request-tag.closed,
+.buy-request-tag.expired {
+  border-color: var(--line, #2a2f3a);
+  background: transparent;
+}
+.buy-request-tag.closed .buy-request-label,
+.buy-request-tag.expired .buy-request-label {
+  color: inherit;
+  opacity: 0.7;
+}
+
+/* Callable services. */
+.pill.service {
+  border-color: #3fb68b;
+  color: #3fb68b;
+  font-weight: 600;
+}
+.service-panel .service-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.service-panel .service-price {
+  margin-left: auto;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.service-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+.service-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--line, #2a2f3a);
+  border-radius: 8px;
+}
+.service-schemas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 8px 0;
+}
+.service-schemas pre {
+  max-height: 260px;
+  overflow: auto;
+  padding: 8px;
+  border-radius: 6px;
+  background: rgba(127, 127, 127, 0.08);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.service-howto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+/* Mainnet only: the link to the test network, set apart from the page links. */
+.nav .nav-network {
+  border: 1px solid var(--accent, #6ea8fe);
+  color: var(--accent, #6ea8fe);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.nav .nav-network:hover {
+  background: rgba(110, 168, 254, 0.12);
+}

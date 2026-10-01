@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="PRSM mark">
+  <defs>
+    <linearGradient id="lg154ktz" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="hsl(299 78% 62%)"/>
+      <stop offset="55%" stop-color="hsl(271 72% 56%)"/>
+      <stop offset="100%" stop-color="hsl(251.39999999999998 68% 60%)"/>
+    </linearGradient>
+    <radialGradient id="lh154ktz" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="hsl(299 85% 58%)" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="hsl(299 85% 58%)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="128" height="128" rx="30" fill="#080b14"/>
+  <rect width="128" height="128" rx="30" fill="url(#lh154ktz)"/>
+  <polygon points="77.52,32.80 95.20,77.52 50.48,95.20 32.80,50.48" fill="none" stroke="url(#lg154ktz)" stroke-width="3" stroke-linejoin="round">
+    <animateTransform attributeName="transform" type="rotate" from="0 64 64" to="-360 64 64" dur="20.5s" repeatCount="indefinite"/>
+  </polygon>
+  <polygon points="77.52,32.80 95.20,77.52 50.48,95.20 32.80,50.48" fill="url(#lg154ktz)" opacity="0.14" transform="scale(0.62) translate(39 39)"/>
+  <circle cx="64" cy="64" r="6" fill="hsl(299 78% 62%)">
+    <animate attributeName="r" values="5;7.5;5" dur="3.4s" repeatCount="indefinite"/>
+  </circle>
+  <text x="64" y="116" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="13" letter-spacing="3" fill="#8fa3c8">PRSM</text>
+</svg>

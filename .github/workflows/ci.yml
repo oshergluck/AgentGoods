@@ -1,0 +1,149 @@
+# Continuous integration.
+#
+# The ordering is deliberate: the cheap gates that catch the worst mistakes run first, so a commit
+# containing a private key fails in seconds rather than after a twenty-minute test matrix.
+#
+# Every job here is also runnable locally with the same command, because a check that only exists
+# in CI is a check people discover by having it fail.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A new push supersedes an in-flight run on the same ref. Cancelling stale runs matters more than
+# their results.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+
+jobs:
+  # ---------------------------------------------------------------- gate 0
+  # Seconds, and it catches the one class of mistake that cannot be undone by a revert: a
+  # credential in history. It runs before anything else for exactly that reason.
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+        working-directory: backend
+      - name: Scan the whole repository for credentials
+        run: npm run secrets:scan
+        working-directory: backend
+
+  # ---------------------------------------------------------------- gate 1
+  contracts:
+    name: Contracts
+    runs-on: ubuntu-latest
+    needs: secrets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: contracts/package-lock.json
+      - run: npm ci --no-audit --no-fund
+        working-directory: contracts
+      - name: Compile
+        run: npx hardhat compile
+        working-directory: contracts
+      - name: Test
+        # Includes the real-Uniswap transition suite, which is the one that protects an
+        # irreversible, unrehearsable, money-moving code path.
+        run: npx hardhat test
+        working-directory: contracts
+      - name: Upload deployment ABIs for downstream jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: contract-artifacts
+          path: |
+            contracts/artifacts
+            deployments
+          retention-days: 3
+          if-no-files-found: ignore
+
+  # ---------------------------------------------------------------- gate 2
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    needs: contracts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install contract dependencies
+        # The backend test harness spawns a real Hardhat node and deploys to it. Mocking that away
+        # would remove the only thing the integration suite is actually for.
+        run: npm ci --no-audit --no-fund
+        working-directory: contracts
+      - run: npm ci --no-audit --no-fund
+        working-directory: backend
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: backend
+      - name: Test
+        run: npm test
+        working-directory: backend
+        env:
+          LOG_LEVEL: silent
+
+  # ---------------------------------------------------------------- gate 3
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    needs: secrets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+        working-directory: frontend
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: frontend
+      - name: Build
+        run: npm run build
+        working-directory: frontend
+
+  # ---------------------------------------------------------------- gate 4
+  # The production gate, run against the manifest that would actually ship. It is the last line
+  # between a development default and a live deployment, so CI exercises it on every commit rather
+  # than trusting that someone remembers to run it at deploy time.
+  deploy-gate:
+    name: Deployment gate
+    runs-on: ubuntu-latest
+    needs: [contracts, backend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: The LOCAL manifest must pass for LOCAL
+        run: node infra/scripts/deploy-gate.mjs --manifest deployments/31337.json --environment LOCAL
+      - name: The LOCAL manifest must be REFUSED for PRODUCTION
+        # Proving the gate actually refuses is the point. A gate nobody has seen say no is a gate
+        # nobody knows works.
+        run: |
+          if node infra/scripts/deploy-gate.mjs --manifest deployments/31337.json --environment PRODUCTION; then
+            echo "::error::the deployment gate accepted a mock manifest for PRODUCTION"
+            exit 1
+          fi
+          echo "gate correctly refused the mock manifest for PRODUCTION"

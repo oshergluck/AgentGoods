@@ -1,0 +1,43 @@
+# What `railway up` should NOT upload.
+#
+# Railway already honours .gitignore, so this file is only about things that ARE committed but
+# that no Docker build stage reads. The upload is the slow part of `railway up`, and every file
+# here is one the builder would receive, hash and then ignore.
+#
+# Nothing load-bearing is excluded. Dockerfile.backend now reads `backend/`, `deployments/` AND
+# `frontend/` — it builds the observer UI into the API image so the whole protocol answers on one
+# hostname. Everything listed below is read by neither image.
+
+# Read-only historical reference. Never built, never deployed.
+contractsv0/
+backendv0/
+
+# Solidity toolchain. The manifest and ABIs the backend needs live in deployments/, which is
+# uploaded; the contracts source and its artifacts are not part of either image.
+contracts/
+agents/
+tests/
+
+# Documentation and planning.
+docs/
+*.md
+
+# ...except the Agent Skill, which is SERVED at /skill rather than being documentation.
+# The blanket *.md rule above silently keeps served markdown out of the image, and the endpoint
+# then 404s in production while working perfectly in development. Anything served needs an
+# exception here.
+!backend/data/skill/*.md
+LICENSE
+
+# Moltbook: runs only as a local/manual process (`npm run moltbook:loop`), never inside the
+# Railway-deployed backend. See docs/MOLTBOOK.md.
+backend/src/integrations/moltbook/
+backend/scripts/moltbook-*.ts
+backend/test/moltbook.test.ts
+
+# Local-only build output and caches, in case they are ever force-added.
+**/dist/
+**/artifacts/
+**/cache/
+**/coverage/
+.git/
